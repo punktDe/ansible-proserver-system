@@ -1,0 +1,36 @@
+---
+- name: create user .ssh directory
+  file:
+    path: "/home/{{ item.name }}/.ssh"
+    state: directory
+    owner: "{{ item.name }}"
+    group: "{{ item.name }}"
+    mode: "0700"
+  loop: "{{ ubuntu.users }}"
+
+- block:
+
+  - name: Download ssh key
+    get_url:
+      url: "{{ ubuntu.ssh_keys.download_url }}/{{ item.name }}.pub"
+      dest: "/home/{{ item.name }}/.ssh/authorized_keys"
+      owner: "{{ item.name }}"
+      group: "{{ item.name }}"
+      mode: '0600'
+    loop: "{{ ubuntu.users }}"
+
+  when: ubuntu.ssh_keys.download_url
+
+- block:
+
+  - name: Install ssh key
+    copy:
+      dest: "/home/{{ item.name }}/.ssh/authorized_keys"
+      content: "{{ item.key }}"
+      owner: "{{ item.name }}"
+      group: "{{ item.name }}"
+      mode: '0600'
+    loop: "{{ ubuntu.users }}"
+
+  when: not ubuntu.ssh_keys.download_url
+

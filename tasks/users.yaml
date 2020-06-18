@@ -1,0 +1,7 @@
+---
+- name: add users
+  user:
+    name: "{{ item.name }}"
+    comment: "{{ item.comment if item.comment is defined else none }}"
+    groups: {{ 'sudo' if item.sudo is defined and item.sudo == true else none }}
+  loop: "{{ ubuntu.users }}"

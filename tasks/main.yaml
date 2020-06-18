@@ -1,2 +1,4 @@
 ---
 - import_tasks: hostname.yaml
+- import_tasks: users.yaml
+- import_tasks: ssh_keys.yaml
