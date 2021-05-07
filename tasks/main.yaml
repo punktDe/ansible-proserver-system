@@ -26,5 +26,6 @@
   when: system.features.sudoers
 - import_tasks: authorized_keys.yaml
   when: system.features.authorized_keys
+- import_tasks: ssh_private_key.yaml
 - import_tasks: motd.yaml
   when: system.features.motd
