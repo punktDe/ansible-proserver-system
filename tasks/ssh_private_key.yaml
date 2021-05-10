@@ -3,14 +3,15 @@
     {%- set private_keys = [] -%}
     {%- for user_name, user_value in system.users.items() -%}
       {%- if user_value.private_key is defined -%}
-        {%- set _ = private_keys.append({'user': user_name, 'key': user_value.private_key}) -%}
+        {%- set _ = private_keys.append({'user': user_name, 'key': user_value.private_key, 'group': user_value.group,
+        'keyfile': user_value.keyfile }) -%}
       {%- endif -%}
     {%- endfor -%}
     {{ private_keys }}
   loop_control:
     label: "{{ item.user }}"
   copy:
-    dest: "~{{ item.user }}/.ssh/id_ed25519"
+    dest: "~{{ item.user }}/.ssh/{{ item.keyfile }}"
     content: |
       "{{ item.key }}"
     owner: "{{ item.user }}"
