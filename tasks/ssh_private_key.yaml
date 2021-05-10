@@ -17,4 +17,3 @@
     owner: "{{ item.user }}"
     group: "{{ item.group }}"
     mode: 0600
-
