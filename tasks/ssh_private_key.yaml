@@ -9,7 +9,7 @@
     {%- endfor -%}
     {{ private_keys }}
   loop_control:
-    label: "{{ item.user }}"
+    label: "{{ item.keyfile }}"
   copy:
     dest: "~{{ item.user }}/.ssh/{{ item.keyfile }}"
     content: |
