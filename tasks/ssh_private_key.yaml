@@ -1,4 +1,5 @@
 - name: set ssh private key
+  when: cms.backend
   loop: |
     {%- set private_keys = [] -%}
     {%- for user_name, user_value in system.users.items() -%}
