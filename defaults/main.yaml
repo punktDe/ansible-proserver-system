@@ -33,6 +33,9 @@ system:
   hostname:
   timezone:
   netplan: {}
+  systemd: {}
+    # resolved:
+      # dns:
   ufw:
     reset: "{{ system_ufw_reset }}"
     state:

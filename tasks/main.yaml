@@ -24,3 +24,4 @@
   when: system.features.authorized_keys
 - import_tasks: motd.yaml
   when: system.features.motd
+- import_tasks: systemd.yaml

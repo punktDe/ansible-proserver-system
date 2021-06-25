@@ -1,0 +1,11 @@
+- name: Set system resolver
+  when:
+    - system.systemd.resolved is defined
+  loop: "{{ system.systemd.resolved.dns }}"
+  ini_file:
+    path: /etc/systemd/resolved.conf
+    section: Resolve
+    option: DNS
+    value: "{% if item is iterable and item is not string %}{% for ns in item %}{% if loop.last %}{{ ns }}{% else %}{{ ns }} {% endif %}{% endfor %}{% else %}{{ item }}{% endif %}"
+  notify: Restart resolved
+

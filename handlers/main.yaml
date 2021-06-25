@@ -2,3 +2,8 @@
   service:
     name: postfix
     state: restarted
+
+- name: Restart resolved
+  service:
+    name: systemd-resolved
+    state: restarted
