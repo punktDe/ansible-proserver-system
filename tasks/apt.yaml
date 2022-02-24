@@ -1,3 +1,21 @@
+- name: Add apt keys
+  when:
+    - item.value.install is defined
+    - item.value.key is defined
+  apt_key:
+    id: "{{ item.value.key.id }}"
+    url: "{{ item.value.key.url }}"
+    state: present
+  loop: "{{ system.apt.packages | dict2items }}"
+
+- name: add apt repositories
+  when:
+    - item.value.install is defined
+  apt_repository:
+    repo: "{{ item.value.repo }}"
+    state: present
+  loop: "{{ system.apt.packages | dict2items }}"
+
 - name: Update apt cache
   apt:
     update_cache: yes
@@ -13,5 +31,8 @@
     dest: "{{ item }}"
 
 - name: Install apt packages
+  when: item.value == true or item.value.install is defined and item.value.install
   apt:
-    name: "{{ system.apt.packages.items()|selectattr('1', 'eq', true)|map(attribute='0')|list }}"
+    name: "{{ item.key }}"
+    state: present
+  loop: "{{ system.apt.packages | dict2items }}"
