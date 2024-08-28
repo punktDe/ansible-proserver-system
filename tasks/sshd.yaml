@@ -27,8 +27,8 @@
     validate: "sshd -T -f %s"
     dest: /etc/ssh/sshd_config.d/00-ansible.conf
     content: |
-      {% for option, value in system.sshd.config.iteritems() %}
-        {{ option }} {{ value }}
+      {% for key, value in system.sshd.config.items() %}
+        {{ key }} {{ value }}
       {% endfor %}
     owner: root
     mode: "0644"

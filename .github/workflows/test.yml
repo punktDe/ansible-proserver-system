@@ -29,6 +29,11 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v3
 
+      - name: Create an openssh privilege separation directory
+        run: |
+          mkdir /var/run/sshd
+          chmod 0755 /var/run/sshd
+
       - name: Set up Python
         uses: actions/setup-python@v2
         with:
