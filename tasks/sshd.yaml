@@ -1,3 +1,9 @@
+---
+- name: Make sure that sshd is installed (Debian-based)
+  when: ansible_os_family == "Debian"
+  ansible.builtin.package:
+    name: openssh-server
+
 - name: Make sure that the custom sshd configuration is included
   notify:
     - Restart sshd

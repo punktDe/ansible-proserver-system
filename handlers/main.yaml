@@ -1,4 +1,10 @@
+---
 - name: Restart Postfix
   ansible.builtin.service:
     name: postfix
+    state: restarted
+
+- name: Restart sshd
+  ansible.builtin.servive:
+    name: sshd
     state: restarted
