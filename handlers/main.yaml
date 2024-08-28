@@ -1,4 +1,11 @@
+---
 - name: Restart Postfix
   ansible.builtin.service:
     name: postfix
+    state: restarted
+
+- name: Restart sshd
+  when: (lookup('env', 'GITHUB_ACTIONS') | length) == 0
+  ansible.builtin.service:
+    name: sshd
     state: restarted

@@ -1,8 +1,14 @@
+---
+- name: Make sure that sshd is installed (Debian-based)
+  when: ansible_os_family == "Debian"
+  ansible.builtin.package:
+    name: openssh-server
+
 - name: Make sure that the custom sshd configuration is included
   notify:
     - Restart sshd
   ansible.builtin.lineinfile:
-    validate: "sshd -T -f %s"
+    validate: "{{ 'sshd -T -f %s' if (lookup('env', 'GITHUB_ACTIONS') | length) == 0 else omit }}"
     path: /etc/ssh/sshd_config
     line: "Include /etc/ssh/sshd_config.d/*"
     insertbefore: "BOF"
@@ -18,11 +24,15 @@
   notify:
     - Restart sshd
   ansible.builtin.copy:
-    validate: "sshd -T -f %s"
+    validate: "{{ 'sshd -T -f %s' if (lookup('env', 'GITHUB_ACTIONS') | length) == 0 else omit }}"
     dest: /etc/ssh/sshd_config.d/00-ansible.conf
     content: |
-      {% for option, value in system.sshd.config.iteritems() %}
-        {{ option }} {{ value }}
+      {% for key, value in system.sshd.config.items() %}
+      {% if value is boolean %}
+      {{ key }} {{ value | ternary('yes', 'no') }}
+      {% else %}
+      {{ key }} {{ value }}
+      {% endif %}
       {% endfor %}
     owner: root
     mode: "0644"

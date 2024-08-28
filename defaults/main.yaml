@@ -5,8 +5,12 @@ system:
     {%- else -%}
       wheel
     {%- endif -%}
+  sshd:
+    config:
+      PasswordAuthentication: no
+      PermitRootLogin: no
   features:
-    sshd: no
+    sshd: yes
     proserver_fact: no
     hostname: yes
     timezone: yes
@@ -23,7 +27,7 @@ system:
     sudoers: yes
     authorized_keys: yes
     authorized_keys_delete: no
-    motd: no
+    motd: yes
   prefix:
     sudoers: >-
       {%- if ansible_system == 'Linux' -%}
