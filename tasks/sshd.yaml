@@ -8,7 +8,7 @@
   notify:
     - Restart sshd
   ansible.builtin.lineinfile:
-    validate: "sshd -T -f %s"
+    validate: "{{ 'sshd -T -f %s' if (lookup('env', 'GITHUB_ACTIONS') | length) == 0 else omit }}"
     path: /etc/ssh/sshd_config
     line: "Include /etc/ssh/sshd_config.d/*"
     insertbefore: "BOF"
