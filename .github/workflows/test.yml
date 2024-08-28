@@ -31,8 +31,8 @@ jobs:
 
       - name: Create an openssh privilege separation directory
         run: |
-          mkdir -p /run/sshd
-          chmod 0755 /run/sshd
+          sudo mkdir -p /run/sshd
+          sudo chmod 0755 /run/sshd
 
       - name: Set up Python
         uses: actions/setup-python@v2
