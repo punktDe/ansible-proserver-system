@@ -28,7 +28,11 @@
     dest: /etc/ssh/sshd_config.d/00-ansible.conf
     content: |
       {% for key, value in system.sshd.config.items() %}
-        {{ key }} {{ value }}
+        {% if value is boolean %}
+          {{ key }} {{ value | ternary('yes', 'no') }}
+        {% else %}
+          {{ key }} {{ value }}
+        {% endif %}
       {% endfor %}
     owner: root
     mode: "0644"
