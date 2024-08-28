@@ -5,7 +5,7 @@
     state: restarted
 
 - name: Restart sshd
-  when: (lookup('env', 'GITHUB_ACTIONS') | length) > 0
+  when: (lookup('env', 'GITHUB_ACTIONS') | length) == 0
   ansible.builtin.service:
     name: sshd
     state: restarted
