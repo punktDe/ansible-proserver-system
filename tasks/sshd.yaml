@@ -24,15 +24,15 @@
   notify:
     - Restart sshd
   ansible.builtin.copy:
-    validate: "{{ 'sshd -T -f %s' if (lookup('env','GITHUB_ACTIONS') | length) == 0 else omit }}"
+    validate: "{{ 'sshd -T -f %s' if (lookup('env', 'GITHUB_ACTIONS') | length) == 0 else omit }}"
     dest: /etc/ssh/sshd_config.d/00-ansible.conf
     content: |
       {%- for key, value in system.sshd.config.items() %}
-        {%- if value is boolean %}
+      {%- if value is boolean %}
           {{ key }} {{ value | ternary('yes', 'no') }}
-        {%- else %}
+      {%- else %}
           {{ key }} {{ value }}
-        {%- endif %}
+      {%- endif %}
       {%- endfor %}
     owner: root
     mode: "0644"
