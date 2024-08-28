@@ -5,6 +5,10 @@ system:
     {%- else -%}
       wheel
     {%- endif -%}
+  sshd:
+    config:
+      PasswordAuthentication: no
+      PermitRootLogin: no
   features:
     sshd: no
     proserver_fact: no

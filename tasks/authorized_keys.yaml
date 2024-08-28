@@ -23,6 +23,8 @@
 
 - name: Add authorized keys
   loop: "{{ user_authorized_keys }}"
+  failed_when: "{{ add_authorized_keys.failed and not ansible_check_mode }}"
+  register: add_authorized_keys
   loop_control:
     label: '{{ item.user }} public_keys="{{ item.key }}"'
   ansible.posix.authorized_key:
