@@ -23,6 +23,14 @@
     owner: root
   when: nodejs.version is defined
 
+- name: Template the version lock file
+  when: system.apt.version_locks | length > 0
+  ansible.builtin.template:
+    src: apt/preferences.d/00-ansible
+    dest: /etc/apt/preferences.d/00-ansible
+    owner: root
+    mode: "0644"
+
 - name: Update apt cache and remove unneeded packages
   ansible.builtin.apt:
     update_cache: yes

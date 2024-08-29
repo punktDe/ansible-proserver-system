@@ -1,0 +1,6 @@
+{% for lock in system.apt.version_lock %}
+Package: {{ lock.package }}
+Pin: version {{ lock.version }}
+Pin-Priority: 1001
+
+{% endfor %}

@@ -28,6 +28,7 @@ system:
     authorized_keys: yes
     authorized_keys_delete: no
     motd: yes
+    unattended_upgrades: no
   prefix:
     sudoers: >-
       {%- if ansible_system == 'Linux' -%}
@@ -59,6 +60,7 @@ system:
   apt:
     proxy:
     packages: {}
+    version_locks: []
   postfix:
     prefix:
       config: >-
