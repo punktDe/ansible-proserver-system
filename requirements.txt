@@ -4,3 +4,4 @@ docker
 molecule
 molecule-plugins
 yamllint
+requests
