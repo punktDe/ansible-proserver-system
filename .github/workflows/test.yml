@@ -36,7 +36,8 @@ jobs:
 
       - name: Install dependencies.
         run: |
-          source .envrc
+          pip install -r requirements.txt  
+          ansible-galaxy install -r requirements.yml
 
       - name: Run molecule
-        run: ".venv/bin/molecule test"
+        run: molecule test
