@@ -23,6 +23,13 @@
     owner: root
     mode: "0644"
 
+- name: Template the apt periodic configuration
+  ansible.builtin.template:
+    src: apt/apt.conf.d/10periodic
+    dest: /etc/apt/apt.conf.d/10periodic
+    owner: root
+    mode: "0644"
+
 - name: Install the unattended_upgrades systemd timer
   ansible.builtin.template:
     src: systemd/system/apt-daily-upgrade.timer.d/override.conf
