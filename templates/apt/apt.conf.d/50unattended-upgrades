@@ -10,17 +10,17 @@ Unattended-Upgrade::MailOnlyOnError "true";
 
 Unattended-Upgrade::Allowed-Origins {
   "${distro_id} ${distro_codename}-security";
-{% if not system.unattended_upgrades.security_only %}
+{% if not system.unattended_upgrades.config.security_only %}
   "${distro_id} ${distro_codename}-updates";
 {% endif %}
 };
 
 Unattended-Upgrade::Package-Blacklist{
-{% for package in system.unattended_upgrades.blacklist %}
+{% for package in system.unattended_upgrades.config.blacklist %}
       "{{ package }}";
 {% endfor %}
 }
 
 Unattended-Upgrade::AutoFixInterruptedDpkg "true";
 
-Unattended-Upgrade::Remove-Unused-Dependencies "{{ system.unattended_upgrades.auto_clean | lower }}";
+Unattended-Upgrade::Remove-Unused-Dependencies "{{ system.unattended_upgrades.config.auto_clean | lower }}";
