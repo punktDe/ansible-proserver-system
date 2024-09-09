@@ -1,9 +1,9 @@
 Unattended-Upgrade::Automatic-Reboot "{{ system.unattended_upgrades.config.auto_reboot.enabled | lower }}";
 Unattended-Upgrade::Automatic-Reboot-Time "{{ system.unattended_upgrades.config.auto_reboot.time }}";
 
-{% if system.unattended_upgrades.mail.enable %}
-Unattended-Upgrade::Mail "{{ system.unattended_upgrades.mail.to }}";
-{% if system.unattended_upgrades.mail.only_on_error %}
+{% if system.unattended_upgrades.config.mail.enable %}
+Unattended-Upgrade::Mail "{{ system.unattended_upgrades.config.mail.to }}";
+{% if system.unattended_upgrades.config.mail.only_on_error %}
 Unattended-Upgrade::MailOnlyOnError "true";
 {% endif %}
 {% endif %}
