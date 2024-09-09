@@ -22,6 +22,9 @@
 - ansible.builtin.include_tasks: apt.yaml
   when: system.features.apt
 
+- ansible.builtin.include_tasks: unattended_upgrades.yaml
+  when: system.features.unattended_upgrades
+
 - ansible.builtin.include_tasks: ufw.yaml
   when: system.features.ufw
 

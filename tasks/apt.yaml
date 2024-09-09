@@ -1,3 +1,4 @@
+---
 - name: Install GPG on Ubuntu/Debian
   ansible.builtin.package:
     name: gpg

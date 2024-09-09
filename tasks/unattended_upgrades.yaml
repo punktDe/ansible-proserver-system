@@ -5,3 +5,27 @@
     name:
       - unattended-upgrades
       - apt-listchanges
+
+- name: Ensure the configuration directories exist
+  ansible.builtin.file:
+    state: directory
+    path: "{{ item }}"
+    owner: root
+    mode: "0755"
+  loop:
+    - /etc/apt/apt.conf.d
+    - /etc/systemd/system/apt-daily-upgrade.timer.d
+
+- name: Template the unattended upgrades configuration
+  ansible.builtin.template:
+    src: apt/apt.conf.d/50unattended-upgrades
+    dest: /etc/apt/apt.conf.d/50unattended-upgrades
+    owner: root
+    mode: "0644"
+
+- name: Install the unattended_upgrades systemd timer
+  ansible.builtin.template:
+    src: systemd/system/apt-daily-upgrade.timer.d/override.conf
+    dest: /etc/systemd/system/apt-daily-upgrade.timer.d/override.conf
+    owner: root
+    mode: "0644"

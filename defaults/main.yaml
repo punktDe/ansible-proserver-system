@@ -61,6 +61,20 @@ system:
     proxy:
     packages: {}
     version_locks: []
+  unattended_upgrades:
+    config:
+      security_only: yes
+      auto_clean: yes
+      auto_reboot:
+        enabled: no
+        time: "03:00"
+      blacklist: []
+      schedule: "20:00" # https://www.freedesktop.org/software/systemd/man/latest/systemd.time.html
+      mail:
+        enable: yes
+        only_on_error: yes
+        to: 
+
   postfix:
     prefix:
       config: >-
