@@ -63,7 +63,7 @@ system:
     version_locks: []
   unattended_upgrades:
     config:
-      security_only: yes
+      feature_updates: no
       auto_clean: yes
       auto_reboot:
         enabled: no

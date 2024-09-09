@@ -10,7 +10,7 @@ Unattended-Upgrade::MailOnlyOnError "true";
 
 Unattended-Upgrade::Allowed-Origins {
   "${distro_id} ${distro_codename}-security";
-{% if not system.unattended_upgrades.config.security_only %}
+{% if system.unattended_upgrades.config.feature_updates %}
   "${distro_id} ${distro_codename}-updates";
 {% endif %}
 };
