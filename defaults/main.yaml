@@ -60,7 +60,7 @@ system:
   apt:
     proxy:
     packages: {}
-    version_locks: []
+    version_locks: {}
   unattended_upgrades:
     config:
       feature_updates: no
