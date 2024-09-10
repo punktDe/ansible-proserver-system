@@ -9,3 +9,7 @@
   ansible.builtin.service:
     name: sshd
     state: restarted
+
+- name: Reload systemd units
+  ansible.builtin.systemd:
+    daemon_reload: yes

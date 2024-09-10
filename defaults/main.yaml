@@ -28,6 +28,7 @@ system:
     authorized_keys: yes
     authorized_keys_delete: no
     motd: yes
+    unattended_upgrades: no
   prefix:
     sudoers: >-
       {%- if ansible_system == 'Linux' -%}
@@ -59,6 +60,21 @@ system:
   apt:
     proxy:
     packages: {}
+    version_locks: {}
+  unattended_upgrades:
+    config:
+      feature_updates: no
+      auto_clean: yes
+      auto_reboot:
+        enabled: no
+        time: "03:00"
+      blacklist: []
+      schedule: "20:00" # https://www.freedesktop.org/software/systemd/man/latest/systemd.time.html
+      mail:
+        enable: yes
+        only_on_error: yes
+        to: 
+
   postfix:
     prefix:
       config: >-

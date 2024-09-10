@@ -1,0 +1,26 @@
+Unattended-Upgrade::Automatic-Reboot "{{ system.unattended_upgrades.config.auto_reboot.enabled | lower }}";
+Unattended-Upgrade::Automatic-Reboot-Time "{{ system.unattended_upgrades.config.auto_reboot.time }}";
+
+{% if system.unattended_upgrades.config.mail.enable %}
+Unattended-Upgrade::Mail "{{ system.unattended_upgrades.config.mail.to }}";
+{% if system.unattended_upgrades.config.mail.only_on_error %}
+Unattended-Upgrade::MailOnlyOnError "true";
+{% endif %}
+{% endif %}
+
+Unattended-Upgrade::Allowed-Origins {
+  "${distro_id} ${distro_codename}-security";
+{% if system.unattended_upgrades.config.feature_updates %}
+  "${distro_id} ${distro_codename}-updates";
+{% endif %}
+};
+
+Unattended-Upgrade::Package-Blacklist{
+{% for package in system.unattended_upgrades.config.blacklist %}
+      "{{ package }}";
+{% endfor %}
+}
+
+Unattended-Upgrade::AutoFixInterruptedDpkg "true";
+
+Unattended-Upgrade::Remove-Unused-Dependencies "{{ system.unattended_upgrades.config.auto_clean | lower }}";
