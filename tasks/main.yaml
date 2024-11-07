@@ -7,6 +7,9 @@
 - ansible.builtin.include_tasks: proserver_fact.yaml
   when: system.features.proserver_fact
 
+- ansible.builtin.include_tasks: rsyslog.yaml
+  when: system.features.rsyslog
+
 - ansible.builtin.include_tasks: hostname.yaml
   when: system.features.hostname
 

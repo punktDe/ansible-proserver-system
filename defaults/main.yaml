@@ -9,7 +9,10 @@ system:
     config:
       PasswordAuthentication: no
       PermitRootLogin: no
+  rsyslog:
+    precise_timestamps: no
   features:
+    rsyslog: "{{ ansible_system == 'Linux' }}"
     sshd: yes
     proserver_fact: no
     hostname: yes
