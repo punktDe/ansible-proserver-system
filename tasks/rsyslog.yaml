@@ -1,5 +1,6 @@
 ---
 - name: Ensure precise timestamps are enabled for rsyslog
+  notify: Restart rsyslog
   when: system.rsyslog.precise_timestamps
   ansible.builtin.lineinfile:
     path: /etc/rsyslog.conf

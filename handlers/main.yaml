@@ -13,3 +13,8 @@
 - name: Reload systemd units
   ansible.builtin.systemd:
     daemon_reload: yes
+
+- name: Restart rsyslog
+  ansible.builtin.systemd:
+    name: rsyslog
+    state: restarted
