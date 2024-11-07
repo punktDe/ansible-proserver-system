@@ -1,0 +1,10 @@
+---
+- name: Ensure precise timestamps are enabled for rsyslog
+  notify: Restart rsyslog
+  when: system.rsyslog.precise_timestamps
+  ansible.builtin.lineinfile:
+    path: /etc/rsyslog.conf
+    regexp: '^\$ActionFileDefaultTemplate RSYSLOG_TraditionalFileFormat$'
+    line: '#$ActionFileDefaultTemplate RSYSLOG_TraditionalFileFormat'
+    owner: root
+    mode: "0644"
