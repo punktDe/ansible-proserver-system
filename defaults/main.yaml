@@ -7,7 +7,7 @@ system:
     {%- endif -%}
   sshd:
     config:
-      MaxStartups: 100:30:100
+      MaxStartups: "100:30:100"
       PasswordAuthentication: no
       PermitRootLogin: no
   rsyslog:
