@@ -14,7 +14,7 @@ system:
     precise_timestamps: no
   features:
     rsyslog: "{{ ansible_system == 'Linux' }}"
-    sshd: yes
+    sshd: "{{ ansible_system == 'Linux' }}"
     proserver_fact: no
     hostname: yes
     timezone: yes
