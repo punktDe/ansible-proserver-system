@@ -1,6 +1,7 @@
 ---
 - name: Install GPG on Ubuntu/Debian
-  ansible.builtin.package:
+  ansible.builtin.apt:
+    update_cache: yes
     name: gpg
 
 - name: Remove legacy NodeSource repository
