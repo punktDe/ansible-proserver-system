@@ -14,11 +14,6 @@
     dest: "/etc/ansible/facts.d/users.fact"
     content: "{{ system.users.keys() | list | to_json }}"
 
-- name: Update facts
-  when: users_fact_installed.changed
-  changed_when: yes
-  ansible.builtin.setup: {}
-
 - name: Compare the user variables with the users fact on the system
   ansible.builtin.set_fact:
     old_users_var: "{{ (ansible_local.users | default([]) | difference(system.users.keys() | list)) + system.users_delete }}"
@@ -81,6 +76,6 @@
   loop_control:
     label: "{{ item.key }}"
 
-- name: Sync the list of current users to the target host
+- name: Update facts
   changed_when: users_created.changed or users_deleted.changed
   ansible.builtin.setup: {}
