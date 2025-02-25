@@ -1,3 +1,4 @@
+---
 - name: Template Netplan config
   loop: "{{ system.netplan | dict2items }}"
   loop_control:
@@ -15,5 +16,5 @@
 - name: Apply Netplan config
   when: system_template_netplan_config_result.changed
   changed_when: yes
-  ansible.builtin.command: 
+  ansible.builtin.command:
     cmd: netplan apply

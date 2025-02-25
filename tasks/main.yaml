@@ -1,62 +1,82 @@
+---
 - name: Check the path of the bash executable
   changed_when: no
   register: which_bash
   ansible.builtin.command:
     cmd: which bash
 
-- ansible.builtin.include_tasks: proserver_fact.yaml
+- name: Template proserver facts
+  ansible.builtin.include_tasks: proserver_fact.yaml
   when: system.features.proserver_fact
 
-- ansible.builtin.include_tasks: rsyslog.yaml
+- name: Configure rsyslog
+  ansible.builtin.include_tasks: rsyslog.yaml
   when: system.features.rsyslog
 
-- ansible.builtin.include_tasks: hostname.yaml
+- name: Configure system hostname
+  ansible.builtin.include_tasks: hostname.yaml
   when: system.features.hostname
 
-- ansible.builtin.include_tasks: timezone.yaml
+- name: Configure timezone
+  ansible.builtin.include_tasks: timezone.yaml
   when: system.features.timezone
 
-- ansible.builtin.include_tasks: netplan.yaml
+- name: Configure netplan
+  ansible.builtin.include_tasks: netplan.yaml
   when: system.features.netplan
 
-- ansible.builtin.include_tasks: systemd_resolved.yaml
+- name: Configure systemd-resolved
+  ansible.builtin.include_tasks: systemd_resolved.yaml
   when: system.features.systemd_resolved
 
-- ansible.builtin.include_tasks: apt.yaml
+- name: Install apt packages
+  ansible.builtin.include_tasks: apt.yaml
   when: system.features.apt
 
-- ansible.builtin.include_tasks: unattended_upgrades.yaml
+- name: Configure automatic updates (Debian-based)
+  ansible.builtin.include_tasks: unattended_upgrades.yaml
   when: system.features.unattended_upgrades
 
-- ansible.builtin.include_tasks: ufw.yaml
+- name: Configure UFW (Ubuntu)
+  ansible.builtin.include_tasks: ufw.yaml
   when: system.features.ufw
 
-- ansible.builtin.include_tasks: sysctl.yaml
+- name: Set sysctl variables
+  ansible.builtin.include_tasks: sysctl.yaml
   when: system.features.sysctl
 
-- ansible.builtin.include_tasks: hosts.yaml
+- name: Configure /etc/hosts
+  ansible.builtin.include_tasks: hosts.yaml
   when: system.features.hosts
 
-- ansible.builtin.include_tasks: environment.yaml
+- name: Configure system-wide environment variables
+  ansible.builtin.include_tasks: environment.yaml
   when: system.features.environment
 
-- ansible.builtin.include_tasks: proserver_user.yaml
+- name: Configure proserver user
+  ansible.builtin.include_tasks: proserver_user.yaml
   when: system.features.proserver_user
 
-- ansible.builtin.include_tasks: postfix.yaml
+- name: Configure Postfix
+  ansible.builtin.include_tasks: postfix.yaml
   when: system.features.postfix
 
-- ansible.builtin.include_tasks: users.yaml
+- name: Configure system users
+  ansible.builtin.include_tasks: users.yaml
   when: system.features.users
 
-- ansible.builtin.include_tasks: sudoers.yaml
+- name: Configure sudoers
+  ansible.builtin.include_tasks: sudoers.yaml
   when: system.features.sudoers
 
-- ansible.builtin.include_tasks: authorized_keys.yaml
+- name: Configure authorized ssh keys
+  ansible.builtin.include_tasks: authorized_keys.yaml
   when: system.features.authorized_keys
 
-- ansible.builtin.include_tasks: motd.yaml
+- name: Set TTY greeting
+  ansible.builtin.include_tasks: motd.yaml
   when: system.features.motd
 
-- ansible.builtin.include_tasks: sshd.yaml
+- name: Configure the SSH daemon
+  ansible.builtin.include_tasks: sshd.yaml
   when: system.features.sshd

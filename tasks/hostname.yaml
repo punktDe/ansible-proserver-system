@@ -1,4 +1,5 @@
+---
 - name: Set hostname
-  when: system.hostname
+  when: system.hostname is defined and system.hostname != None
   ansible.builtin.hostname:
     name: "{{ system.hostname }}"

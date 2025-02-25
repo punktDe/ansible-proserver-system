@@ -1,3 +1,4 @@
+---
 - name: Make sure that sudo is installed
   when: ansible_os_family == "Debian"
   ansible.builtin.package:
