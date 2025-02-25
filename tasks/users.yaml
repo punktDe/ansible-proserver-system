@@ -1,24 +1,22 @@
 ---
-- name: Check if the list of users from the previous run exists
-  ansible.builtin.stat:
-    path: "{{ system.prefix.sudoers }}/zz-ansible-users.list"
-  register: old_users
+- name: Create directory for Ansible facts
+  ansible.builtin.file:
+    mode: "0755"
+    owner: root
+    path: "/etc/ansible/facts.d"
+    state: directory
 
-- name: Handle the automatic old users deletion
-  when: old_users.stat.exists
-  block:
-    - name: Fetch old users list
-      ansible.builtin.slurp:
-        path: "{{ system.prefix.sudoers }}/zz-ansible-users.list"
-      register: old_users_contents
+- name: Template a list of Ansible-managed users
+  register: users_fact_installed
+  ansible.builtin.copy:
+    owner: root
+    mode: "0644"
+    dest: "/etc/ansible/facts.d/users.fact"
+    content: "{{ system.users.keys() | list | to_json }}"
 
-    - name: Specify the users to be deleted automatically
-      ansible.builtin.set_fact:
-        old_users_from_file: "{{ old_users_contents.content | b64decode | from_json | difference(system.users) }}"
-
-- name: Specify the users to be deleted manually
+- name: Compare the system.users variable with the users fact on the system
   ansible.builtin.set_fact:
-    old_users_var: "{{ old_users_from_file | default([]) + system.users_delete }}"
+    old_users_var: "{{ (ansible_local.users | default([]) | difference(system.users.keys() | list)) + system.users_delete }}"
 
 - name: Delete the users specified for deletion
   when: (old_users_var | length > 0) and ansible_system != 'FreeBSD'
@@ -27,7 +25,7 @@
       when: system.users | length == 0
       ansible.builtin.fail:
         msg: |
-          system['users'] is empty, which means that you're about to delete ALL USERS on your target host
+          system.users is empty, which means that you're about to delete ALL USERS on your target host
           This is very dangerous and will most likely break your system.
 
     - name: Fail if the current Ansible user is about to get deleted
@@ -78,10 +76,6 @@
   loop_control:
     label: "{{ item.key }}"
 
-- name: Copy a list of current users to the target host
-  ansible.builtin.copy:
-    dest: "{{ system.prefix.sudoers }}/zz-ansible-users.list"
-    owner: root
-    group: "{{ system.root_group }}"
-    mode: 0644
-    content: "{{ system.users }}"
+- name: Update facts
+  changed_when: users_created.changed or users_deleted.changed
+  ansible.builtin.setup: {}
