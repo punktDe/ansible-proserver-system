@@ -15,7 +15,7 @@
     content: "{{ system.users.keys() | list | to_json }}"
 
 - name: Update facts
-  when: users_fact_installed
+  when: users_fact_installed.changed
   changed_when: yes
   ansible.builtin.setup: {}
 
