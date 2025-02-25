@@ -1,3 +1,4 @@
+---
 - name: Check if the list of users from the previous run exists
   ansible.builtin.stat:
     path: "{{ system.prefix.sudoers }}/zz-ansible-users.list"
@@ -28,7 +29,7 @@
         msg: |
           system['users'] is empty, which means that you're about to delete ALL USERS on your target host
           This is very dangerous and will most likely break your system.
-        
+
     - name: Fail if the current Ansible user is about to get deleted
       when: (ansible_user | default("")) in old_users_var
       ansible.builtin.fail:

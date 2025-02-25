@@ -1,3 +1,4 @@
+---
 - name: Ensure resolv.conf links to stub-resolv.conf of systemd-resolved
   ansible.builtin.file:
     src: /run/systemd/resolve/stub-resolv.conf

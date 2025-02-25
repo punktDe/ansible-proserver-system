@@ -1,3 +1,4 @@
+---
 - name: Handle Postfix configuration on FreeBSD
   when: ansible_system == 'FreeBSD'
   block:
@@ -48,7 +49,7 @@
 
         - name: Copy Postfix config from etc-sample
           ansible.builtin.copy:
-            src: /usr/local/etc-sample/postfix/ 
+            src: /usr/local/etc-sample/postfix/
             owner: root
             mode: "0755"
             dest: "{{ system.postfix.prefix.config | quote }}"
@@ -100,7 +101,7 @@
     label: "{{ path }}"
   when: item.changed
   changed_when: yes
-  ansible.builtin.command: 
+  ansible.builtin.command:
     cmd: "postmap {{ path | quote }}"
 
 - name: Configure Postfix
