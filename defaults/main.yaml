@@ -1,3 +1,4 @@
+---
 system:
   root_group: >-
     {%- if ansible_os_family == 'Debian' -%}
@@ -77,7 +78,7 @@ system:
       mail:
         enable: yes
         only_on_error: yes
-        to: 
+        to:
 
   postfix:
     prefix:

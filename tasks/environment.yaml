@@ -1,3 +1,4 @@
+---
 - name: Set global environment variables
   loop: "{{ system.environment | dict2items }}"
   loop_control:

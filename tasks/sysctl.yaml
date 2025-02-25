@@ -1,3 +1,4 @@
+---
 - name: Set sysctl entries
   loop: "{{ system.sysctl | dict2items }}"
   ansible.posix.sysctl:

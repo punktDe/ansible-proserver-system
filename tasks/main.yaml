@@ -1,3 +1,4 @@
+---
 - name: Check the path of the bash executable
   changed_when: no
   register: which_bash
