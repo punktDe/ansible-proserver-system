@@ -14,7 +14,7 @@
     dest: "/etc/ansible/facts.d/users.fact"
     content: "{{ system.users.keys() | list | to_json }}"
 
-- name: Compare the user variables with the users fact on the system
+- name: Compare the system.users variable with the users fact on the system
   ansible.builtin.set_fact:
     old_users_var: "{{ (ansible_local.users | default([]) | difference(system.users.keys() | list)) + system.users_delete }}"
 
@@ -25,7 +25,7 @@
       when: system.users | length == 0
       ansible.builtin.fail:
         msg: |
-          system['users'] is empty, which means that you're about to delete ALL USERS on your target host
+          system.users is empty, which means that you're about to delete ALL USERS on your target host
           This is very dangerous and will most likely break your system.
 
     - name: Fail if the current Ansible user is about to get deleted
