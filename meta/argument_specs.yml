@@ -281,7 +281,7 @@ argument_specs:
                     default: true
                     description: "Whether to automatically run apt-clean after the updates are installed"
                   auto_reboot:
-                    type: bool
+                    type: dict
                     description: "Automatic reboot configuration"
                     default:
                       enabled: true
