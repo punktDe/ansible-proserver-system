@@ -6,6 +6,7 @@ This file is generated automatically by aar-doc and will be overwritten.
 
 Please edit meta/argument_specs.yml instead.
 -->
+
 # ansible-proserver-system
 
 system role for Proserver
@@ -171,10 +172,13 @@ system role for Proserver
 | `details` | Additional details for MOTD | str | no | {{ (((dehydrated | default({})).domains | default({})).keys() | list + ((dehydrated | default({})).domains | default({})).values() | list | sum(start=[])) | reject('eq', inventory_hostname) | reject('eq', ansible_nodename) | system_motd_sort_fqdns }} |
 
 ## Dependencies
+
 None.
 
 ## Installation
+
 Add this role to the requirements.yml of your playbook as follows:
+
 ```yaml
 roles:
   - name: ansible-proserver-system
