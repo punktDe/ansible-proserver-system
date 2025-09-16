@@ -6,14 +6,13 @@ This file is generated automatically by aar-doc and will be overwritten.
 
 Please edit meta/argument_specs.yml instead.
 -->
-
 # ansible-proserver-system
 
 system role for Proserver
 
 ## Supported Operating Systems
 
-- Debian 12
+- Debian 12, 13
 - Ubuntu 24.04, 22.04
 - FreeBSD [Proserver](https://infrastructure.punkt.de/de/produkte/proserver.html)
 
@@ -156,29 +155,21 @@ system role for Proserver
 
 |Option|Description|Type|Required|Default|
 |---|---|---|---|---|
-| `config` | Postfix configuration directory path | str | no | {{ '/etc/postfix' if ansible_system == 'Linux' else '/usr/local/etc/postfix' }} |
+| `config` | Postfix configuration directory path | str | no | `{{ '/etc/postfix' if ansible_system == 'Linux' else '/usr/local/etc/postfix' }}` |
 
 #### Options for `system.motd`
 
 |Option|Description|Type|Required|Default|
 |---|---|---|---|---|
 | `project` | Project name for MOTD | str | no | None |
-| `banner_string` | Banner string for MOTD | str | no | punkt.de        ____
- _ __  _ __ ___/ ___|  ___ _ ____   _____ _ __
-| '_ \| '__/ _ \___ \ / _ \ '__\ \ / / _ \ '__|
-| |_) | | | (_) |__) |  __/ |   \ V /  __/ |
-| .__/|_|  \___/____/ \___|_|    \_/ \___|_|
-|_| |
-| `details` | Additional details for MOTD | str | no | {{ (((dehydrated | default({})).domains | default({})).keys() | list + ((dehydrated | default({})).domains | default({})).values() | list | sum(start=[])) | reject('eq', inventory_hostname) | reject('eq', ansible_nodename) | system_motd_sort_fqdns }} |
+| `banner_string` | Banner string for MOTD | str | no | punkt.de Proserver ASCII art |
+| `details` | Additional details for MOTD | str | no | List of dehydrated domains and system hostnames |
 
 ## Dependencies
-
 None.
 
 ## Installation
-
 Add this role to the requirements.yml of your playbook as follows:
-
 ```yaml
 roles:
   - name: ansible-proserver-system
