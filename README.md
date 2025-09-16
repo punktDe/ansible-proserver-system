@@ -149,7 +149,7 @@ system role for Proserver
 |---|---|---|---|---|
 | `feature_updates` | By default, only security updates are installed. Setting this to 'true' will install feature updates as well | bool | no | False |
 | `auto_clean` | Whether to automatically run apt-clean after the updates are installed | bool | no | True |
-| `auto_reboot` | Automatic reboot configuration | bool | no | {'enabled': True, 'time': '03:00'} |
+| `auto_reboot` | Automatic reboot configuration | dict | no | {"enabled": true, "time": "03:00"} |
 | `blacklist` | A list of packages that shouldn't be automatically updated | list of '' | no | [] |
 | `schedule` | Update schedule in systemd OnCalendar format | str | no | 20:00 |
 | `mail` |  | dict of 'mail' options | no |  |
