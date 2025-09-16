@@ -1,0 +1,351 @@
+---
+argument_specs:
+  main:
+    short_description: System configuration role for Proserver
+    options:
+      system:
+        description: Main configuration namespace for all system settings
+        type: dict
+        required: false
+        default: {}
+        options:
+          root_group:
+            description: Root group name (automatically determined based on OS)
+            type: str
+            default: "{{ 'root' if ansible_os_family == 'Debian' else 'wheel' }}"
+          sshd:
+            description: SSH daemon configuration
+            type: dict
+            default: {}
+            options:
+              config:
+                description: SSH daemon configuration parameters
+                type: dict
+                default:
+                  MaxStartups: "100:30:100"
+                  PasswordAuthentication: false
+                  PermitRootLogin: false
+          rsyslog:
+            description: Rsyslog configuration
+            type: dict
+            default: {}
+            options:
+              precise_timestamps:
+                description: Enable precise timestamps in rsyslog
+                type: bool
+                default: false
+          features:
+            description: Feature flags to enable/disable various role components
+            type: dict
+            default: {}
+            options:
+              rsyslog:
+                description: Enable rsyslog configuration
+                type: bool
+                default: "{{ ansible_system == 'Linux' }}"
+              sshd:
+                description: Enable SSH daemon configuration
+                type: bool
+                default: "{{ ansible_system == 'Linux' }}"
+              proserver_fact:
+                description: Enable proserver fact generation
+                type: bool
+                default: false
+              hostname:
+                description: Enable hostname configuration
+                type: bool
+                default: true
+              timezone:
+                description: Enable timezone configuration
+                type: bool
+                default: true
+              netplan:
+                description: Enable netplan configuration
+                type: bool
+                default: "{{ ansible_distribution == 'Ubuntu' }}"
+              systemd_resolved:
+                description: Enable systemd-resolved configuration
+                type: bool
+                default: false
+              ufw:
+                description: Enable UFW firewall configuration
+                type: bool
+                default: "{{ ansible_distribution == 'Ubuntu' }}"
+              sysctl:
+                description: Enable sysctl configuration
+                type: bool
+                default: "{{ ansible_system == 'Linux' }}"
+              hosts:
+                description: Enable /etc/hosts configuration
+                type: bool
+                default: true
+              environment:
+                description: Enable system-wide environment variables
+                type: bool
+                default: true
+              apt:
+                description: Enable APT package management (Debian/Ubuntu only)
+                type: bool
+                default: "{{ ansible_os_family == 'Debian' }}"
+              proserver_user:
+                description: Enable proserver user configuration
+                type: bool
+                default: false
+              postfix:
+                description: Enable Postfix mail server configuration
+                type: bool
+                default: false
+              users:
+                description: Enable user management
+                type: bool
+                default: true
+              sudoers:
+                description: Enable sudoers configuration
+                type: bool
+                default: true
+              authorized_keys:
+                description: Enable SSH authorized keys management
+                type: bool
+                default: true
+              authorized_keys_delete:
+                description: Enable deletion of SSH authorized keys
+                type: bool
+                default: false
+              motd:
+                description: Enable message of the day configuration
+                type: bool
+                default: true
+              unattended_upgrades:
+                description: Enable unattended upgrades configuration (Debian/Ubuntu only)
+                type: bool
+                default: false
+          prefix:
+            description: Path prefixes for various system components
+            type: dict
+            default: {}
+            options:
+              sudoers:
+                description: Path prefix for sudoers configuration
+                type: str
+                default: "{{ '/etc' if ansible_system == 'Linux' else '/usr/local/etc' }}"
+          proserver_fact:
+            description: Proserver fact configuration
+            type: dict
+            default: {}
+            options:
+              python:
+                description: Python interpreter path for proserver facts
+                type: str
+                default: "{{ '/usr/bin/env python3.8' if (ansible_distribution == 'Ubuntu' and ansible_distribution_version == '18.04') else '/usr/bin/env python3' }}"
+          network:
+            description: Network configuration
+            type: dict
+            default: {}
+            options:
+              public_interfaces:
+                description: List of public network interfaces
+                type: list
+                elements: str
+                default: []
+              public_subnets:
+                description: List of public subnets
+                type: list
+                elements: str
+                default: []
+          hostname:
+            description: Hostname configuration
+            type: str
+            default: null
+          timezone:
+            description: System timezone
+            type: str
+            default: null
+          netplan:
+            description: Netplan configuration
+            type: dict
+            default: {}
+          ufw:
+            description: UFW firewall configuration
+            type: dict
+            default: {}
+            options:
+              reset:
+                description: Reset UFW to default state
+                type: bool
+                default: "{{ system_ufw_reset | bool }}"
+              state:
+                description: UFW state (enabled/disabled)
+                type: str
+                default: null
+              policy:
+                description: UFW default policy
+                type: str
+                default: null
+              rules:
+                description: UFW firewall rules
+                type: dict
+                default: {}
+                options:
+                  comment:
+                    description: Comment for the UFW rule
+                    type: str
+                    default: null
+                  delete:
+                    description: Whether to delete the UFW rule
+                    type: bool
+                    default: false
+                  direction:
+                    description: Direction for the UFW rule (in/out)
+                    type: str
+                    default: null
+                  from_ip:
+                    description: Source IP address for the UFW rule
+                    type: str
+                    default: "any"
+                  from_port:
+                    description: Source port for the UFW rule
+                    type: str
+                    default: null
+                  interface:
+                    description: Network interface for the UFW rule
+                    type: str
+                    default: null
+                  log:
+                    description: Enable logging for the UFW rule
+                    type: bool
+                    default: false
+                  proto:
+                    description: Protocol for the UFW rule (tcp/udp/any)
+                    type: str
+                    default: null
+                  route:
+                    description: Apply the rule to routed/forwarded packets
+                    type: bool
+                    default: false
+                  rule:
+                    description: Rule type (allow/deny/limit/reject)
+                    type: str
+                    default: null
+                  to_ip:
+                    description: Destination IP address for the UFW rule
+                    type: str
+                    default: "any"
+                  to_port:
+                    description: Destination port for the UFW rule
+                    type: str
+                    default: null
+          sysctl:
+            description: Sysctl kernel parameters
+            type: dict
+            default: {}
+          hosts:
+            description: /etc/hosts entries
+            type: dict
+            default: {}
+          environment:
+            description: System-wide environment variables
+            type: dict
+            default: {}
+          apt:
+            description: APT package management configuration
+            type: dict
+            default: {}
+            options:
+              proxy:
+                description: APT proxy configuration
+                type: str
+                default: null
+              packages:
+                description: APT packages to install (dict with package names as keys and boolean values)
+                type: dict
+                default: {}
+              version_locks:
+                description: APT package version locks (dict with package names as keys and version constraint values)
+                type: dict
+                default: {}
+          unattended_upgrades:
+            description: Unattended upgrades configuration
+            type: dict
+            default: {}
+            options:
+              config:
+                description: Unattended upgrades configuration parameters
+                type: dict
+                default:
+                  feature_updates: false
+                  auto_clean: true
+                  auto_reboot:
+                    enabled: false
+                    time: "03:00"
+                  blacklist: []
+                  schedule: "20:00"
+                  mail:
+                    enable: true
+                    only_on_error: true
+                    to: null
+          postfix:
+            description: Postfix mail server configuration
+            type: dict
+            default: {}
+            options:
+              prefix:
+                description: Postfix configuration path prefix
+                type: dict
+                default: {}
+                options:
+                  config:
+                    description: Postfix configuration directory path
+                    type: str
+                    default: "{{ '/etc/postfix' if ansible_system == 'Linux' else '/usr/local/etc/postfix' }}"
+              hash_maps:
+                description: Postfix hash maps
+                type: dict
+                default: {}
+              main.cf:
+                description: Postfix main.cf configuration
+                type: dict
+                default: {}
+          sudoers:
+            description: Sudoers configuration files
+            type: dict
+            default: {}
+          groups:
+            description: System groups to create
+            type: dict
+            default: {}
+          users:
+            description: System users to create
+            type: dict
+            default: {}
+          users_delete:
+            description: List of users to delete
+            type: list
+            elements: str
+            default: []
+          motd:
+            description: Message of the day configuration
+            type: dict
+            default: {}
+            options:
+              project:
+                description: Project name for MOTD
+                type: str
+                default: null
+              banner_string:
+                description: Banner string for MOTD
+                type: str
+                default: |
+                  punkt.de        ____
+                   _ __  _ __ ___/ ___|  ___ _ ____   _____ _ __
+                  | '_ \| '__/ _ \___ \ / _ \ '__\ \ / / _ \ '__|
+                  | |_) | | | (_) |__) |  __/ |   \ V /  __/ |
+                  | .__/|_|  \___/____/ \___|_|    \_/ \___|_|
+                  |_|
+              details:
+                description: Additional details for MOTD
+                type: str
+                default: "{{ (((dehydrated | default({})).domains | default({})).keys() | list + ((dehydrated | default({})).domains | default({})).values() | list | sum(start=[])) | reject('eq', inventory_hostname) | reject('eq', ansible_nodename) | system_motd_sort_fqdns }}"
+      system_ufw_reset:
+        description: Global flag to reset UFW firewall
+        type: bool
+        default: false
