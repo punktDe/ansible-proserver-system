@@ -141,7 +141,26 @@ system role for Proserver
 
 |Option|Description|Type|Required|Default|
 |---|---|---|---|---|
-| `config` | Unattended upgrades configuration parameters | dict | no | {"feature_updates": false, "auto_clean": true, "auto_reboot": {"enabled": false, "time": "03:00"}, "blacklist": [], "schedule": "20:00", "mail": {"enable": true, "only_on_error": true, "to": null}} |
+| `config` | Unattended upgrades configuration parameters | dict of 'config' options | no |  |
+
+#### Options for `system.unattended_upgrades.config`
+
+|Option|Description|Type|Required|Default|
+|---|---|---|---|---|
+| `feature_updates` | By default, only security updates are installed. Setting this to 'true' will install feature updates as well | bool | no | False |
+| `auto_clean` | Whether to automatically run apt-clean after the updates are installed | bool | no | True |
+| `auto_reboot` | Automatic reboot configuration | bool | no | {'enabled': True, 'time': '03:00'} |
+| `blacklist` | A list of packages that shouldn't be automatically updated | list of '' | no | [] |
+| `schedule` | Update schedule in systemd OnCalendar format | str | no | 20:00 |
+| `mail` |  | dict of 'mail' options | no |  |
+
+#### Options for `system.unattended_upgrades.config.mail`
+
+|Option|Description|Type|Required|Default|
+|---|---|---|---|---|
+| `enable` | Enable unattended_upgrades mail reports | bool | no | True |
+| `only_on_error` | Only send e-mails about errors | bool | no | True |
+| `to` | The email address to send the e-mails to | str | no | None |
 
 #### Options for `system.postfix`
 
