@@ -1,8 +1,9 @@
 ---
 galaxy_info:
-  author: "Punkt.de"
-  license: ""
-  description: "System role for Proserver"
-  role_name: "proserver_system"
+  author: "punkt.de"
+  license: "MIT"
+  role_name: system
+  description: "system role for Proserver"
   namespace: "punktde"
   min_ansible_version: "2.15"
+  platforms: []

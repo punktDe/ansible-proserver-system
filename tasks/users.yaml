@@ -18,7 +18,9 @@
 
 - name: Specify the users to be deleted manually
   ansible.builtin.set_fact:
-    old_users_var: "{{ old_users_from_file | default([]) + system.users_delete }}"
+    # not really invalid - see https://github.com/ansible/ansible-lint/issues/4702
+    # noqa jinja[invalid]
+    old_users_var: "{{ (old_users_from_file | default([])) + system.users_delete }}"
 
 - name: Delete the users specified for deletion
   when: (old_users_var | length > 0) and ansible_system != 'FreeBSD'
