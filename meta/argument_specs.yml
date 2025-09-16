@@ -185,55 +185,6 @@ argument_specs:
                 description: UFW firewall rules
                 type: dict
                 default: {}
-                options:
-                  comment:
-                    description: Comment for the UFW rule
-                    type: str
-                    default: null
-                  delete:
-                    description: Whether to delete the UFW rule
-                    type: bool
-                    default: false
-                  direction:
-                    description: Direction for the UFW rule (in/out)
-                    type: str
-                    default: null
-                  from_ip:
-                    description: Source IP address for the UFW rule
-                    type: str
-                    default: "any"
-                  from_port:
-                    description: Source port for the UFW rule
-                    type: str
-                    default: null
-                  interface:
-                    description: Network interface for the UFW rule
-                    type: str
-                    default: null
-                  log:
-                    description: Enable logging for the UFW rule
-                    type: bool
-                    default: false
-                  proto:
-                    description: Protocol for the UFW rule (tcp/udp/any)
-                    type: str
-                    default: null
-                  route:
-                    description: Apply the rule to routed/forwarded packets
-                    type: bool
-                    default: false
-                  rule:
-                    description: Rule type (allow/deny/limit/reject)
-                    type: str
-                    default: null
-                  to_ip:
-                    description: Destination IP address for the UFW rule
-                    type: str
-                    default: "any"
-                  to_port:
-                    description: Destination port for the UFW rule
-                    type: str
-                    default: null
           sysctl:
             description: Sysctl kernel parameters
             type: dict
