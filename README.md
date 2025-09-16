@@ -110,24 +110,7 @@ system role for Proserver
 | `reset` | Reset UFW to default state | bool | no | {{ system_ufw_reset | bool }} |
 | `state` | UFW state (enabled/disabled) | str | no | None |
 | `policy` | UFW default policy | str | no | None |
-| `rules` | UFW firewall rules | dict of 'rules' options | no | {} |
-
-#### Options for `system.ufw.rules`
-
-|Option|Description|Type|Required|Default|
-|---|---|---|---|---|
-| `comment` | Comment for the UFW rule | str | no | None |
-| `delete` | Whether to delete the UFW rule | bool | no | False |
-| `direction` | Direction for the UFW rule (in/out) | str | no | None |
-| `from_ip` | Source IP address for the UFW rule | str | no | any |
-| `from_port` | Source port for the UFW rule | str | no | None |
-| `interface` | Network interface for the UFW rule | str | no | None |
-| `log` | Enable logging for the UFW rule | bool | no | False |
-| `proto` | Protocol for the UFW rule (tcp/udp/any) | str | no | None |
-| `route` | Apply the rule to routed/forwarded packets | bool | no | False |
-| `rule` | Rule type (allow/deny/limit/reject) | str | no | None |
-| `to_ip` | Destination IP address for the UFW rule | str | no | any |
-| `to_port` | Destination port for the UFW rule | str | no | None |
+| `rules` | UFW firewall rules | dict | no |  |
 
 #### Options for `system.apt`
 
