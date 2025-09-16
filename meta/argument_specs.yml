@@ -271,18 +271,44 @@ argument_specs:
               config:
                 description: Unattended upgrades configuration parameters
                 type: dict
-                default:
-                  feature_updates: false
-                  auto_clean: true
+                options:
+                  feature_updates:
+                    type: bool
+                    default: false
+                    description: "By default, only security updates are installed. Setting this to 'true' will install feature updates as well"
+                  auto_clean:
+                    type: bool
+                    default: true
+                    description: "Whether to automatically run apt-clean after the updates are installed"
                   auto_reboot:
-                    enabled: false
-                    time: "03:00"
-                  blacklist: []
-                  schedule: "20:00"
+                    type: bool
+                    description: "Automatic reboot configuration"
+                    default:
+                      enabled: true
+                      time: "03:00"
+                  blacklist:
+                    type: list
+                    description: "A list of packages that shouldn't be automatically updated"
+                    default: []
+                  schedule:
+                    type: str
+                    description: "Update schedule in systemd OnCalendar format"
+                    default: "20:00"
                   mail:
-                    enable: true
-                    only_on_error: true
-                    to: null
+                    type: dict
+                    options:
+                      enable:
+                        type: bool
+                        default: true
+                        description: "Enable unattended_upgrades mail reports"
+                      only_on_error:
+                        type: bool
+                        default: true
+                        description: "Only send e-mails about errors"
+                      to:
+                        type: str
+                        default: null
+                        description: "The email address to send the e-mails to"
           postfix:
             description: Postfix mail server configuration
             type: dict
