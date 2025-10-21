@@ -1,5 +1,5 @@
 ---
 - name: Set hostname
-  when: system.hostname is defined and system.hostname != None
+  when: system.hostname is defined and system.hostname != None and system.hostname | length > 0
   ansible.builtin.hostname:
     name: "{{ system.hostname }}"
