@@ -40,7 +40,7 @@
   changed_when: false
 
 - name: Configure apt proxy
-  when: system.apt.proxy is defined and system.apt.proxy != None
+  when: system.apt.proxy is defined and system.apt.proxy != None and system.apt.proxy | length > 0
   ansible.builtin.copy:
     owner: root
     mode: "0644"

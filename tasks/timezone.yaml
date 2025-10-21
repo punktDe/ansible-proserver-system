@@ -1,6 +1,6 @@
 ---
 - name: Set timezone
-  when: system.timezone is defined and system.timezone != None
+  when: system.timezone is defined and system.timezone != None and system.timezone | length > 0
   loop:
     - "{{ system.timezone }}"
   community.general.timezone:

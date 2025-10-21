@@ -25,7 +25,7 @@
     to_port: "{{ item.value.to_port | default(omit) }}"
 
 - name: Set UFW state and policy
-  when: item.state is defined and item.state != None and item.policy is defined and item.state != None
+  when: item.state is defined and item.state != None and item.state | length > 0 and item.policy is defined and item.policy != None and item.policy | length > 0
   loop:
     - state: "{{ system.ufw.state }}"
       policy: "{{ system.ufw.policy }}"
