@@ -1,6 +1,6 @@
 ---
 - name: Get current OS version
-  when: ansible_system == 'FreeBSD'
+  when: ansible_facts["system"] == 'FreeBSD'
   check_mode: no
   ansible.builtin.shell:
     cmd: >-

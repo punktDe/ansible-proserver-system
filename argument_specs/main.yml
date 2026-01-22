@@ -35,7 +35,7 @@ argument_specs:
                 type: bool
                 default: false
           features:
-            description: Feature flags to enable/disable various role components
+            description: Feature flags to enable/disable various system components
             type: dict
             default: {}
             options:
@@ -60,7 +60,7 @@ argument_specs:
                 type: bool
                 default: true
               netplan:
-                description: Enable netplan configuration
+                description: Enable netplan configuration (Ubuntu only)
                 type: bool
                 default: "{{ ansible_facts['distribution'] == 'Ubuntu' }}"
               systemd_resolved:
@@ -68,7 +68,7 @@ argument_specs:
                 type: bool
                 default: false
               ufw:
-                description: Enable UFW firewall configuration
+                description: Enable UFW firewall configuration (Ubuntu only)
                 type: bool
                 default: "{{ ansible_facts['distribution'] == 'Ubuntu' }}"
               sysctl:
@@ -116,7 +116,7 @@ argument_specs:
                 type: bool
                 default: true
               unattended_upgrades:
-                description: Enable unattended upgrades configuration (Debian/Ubuntu only)
+                description: Enable unattended upgrades configuration
                 type: bool
                 default: false
           prefix:
@@ -161,7 +161,7 @@ argument_specs:
             type: str
             default: null
           netplan:
-            description: Netplan configuration
+            description: Netplan configuration (Ubuntu only)
             type: dict
             default: {}
           ufw:
@@ -185,6 +185,55 @@ argument_specs:
                 description: UFW firewall rules
                 type: dict
                 default: {}
+                options:
+                  comment:
+                    description: Comment for the UFW rule
+                    type: str
+                    default: null
+                  delete:
+                    description: Whether to delete the UFW rule
+                    type: bool
+                    default: null
+                  direction:
+                    description: Direction for the UFW rule (in/out)
+                    type: str
+                    default: null
+                  from_ip:
+                    description: Source IP address for the UFW rule
+                    type: str
+                    default: null
+                  from_port:
+                    description: Source port for the UFW rule
+                    type: str
+                    default: null
+                  interface:
+                    description: Network interface for the UFW rule
+                    type: str
+                    default: null
+                  log:
+                    description: Enable logging for the UFW rule
+                    type: bool
+                    default: null
+                  proto:
+                    description: Protocol for the UFW rule (tcp/udp/any)
+                    type: str
+                    default: null
+                  route:
+                    description: Route for the UFW rule
+                    type: bool
+                    default: null
+                  rule:
+                    description: Rule type (allow/deny/reject)
+                    type: str
+                    default: null
+                  to_ip:
+                    description: Destination IP address for the UFW rule
+                    type: str
+                    default: null
+                  to_port:
+                    description: Destination port for the UFW rule
+                    type: str
+                    default: null
           sysctl:
             description: Sysctl kernel parameters
             type: dict
@@ -211,7 +260,7 @@ argument_specs:
                 type: dict
                 default: {}
               version_locks:
-                description: APT package version locks (dict with package names as keys and version constraint values)
+                description: APT package version locks
                 type: dict
                 default: {}
           unattended_upgrades:
@@ -222,44 +271,18 @@ argument_specs:
               config:
                 description: Unattended upgrades configuration parameters
                 type: dict
-                options:
-                  feature_updates:
-                    type: bool
-                    default: false
-                    description: "By default, only security updates are installed. Setting this to 'true' will install feature updates as well"
-                  auto_clean:
-                    type: bool
-                    default: true
-                    description: "Whether to automatically run apt-clean after the updates are installed"
+                default:
+                  feature_updates: false
+                  auto_clean: true
                   auto_reboot:
-                    type: dict
-                    description: "Automatic reboot configuration"
-                    default:
-                      enabled: true
-                      time: "03:00"
-                  blacklist:
-                    type: list
-                    description: "A list of packages that shouldn't be automatically updated"
-                    default: []
-                  schedule:
-                    type: str
-                    description: "Update schedule in systemd OnCalendar format"
-                    default: "20:00"
+                    enabled: false
+                    time: "03:00"
+                  blacklist: []
+                  schedule: "20:00"
                   mail:
-                    type: dict
-                    options:
-                      enable:
-                        type: bool
-                        default: true
-                        description: "Enable unattended_upgrades mail reports"
-                      only_on_error:
-                        type: bool
-                        default: true
-                        description: "Only send e-mails about errors"
-                      to:
-                        type: str
-                        default: null
-                        description: "The email address to send the e-mails to"
+                    enable: true
+                    only_on_error: true
+                    to: null
           postfix:
             description: Postfix mail server configuration
             type: dict
@@ -273,12 +296,12 @@ argument_specs:
                   config:
                     description: Postfix configuration directory path
                     type: str
-                    default: "`{{ '/etc/postfix' if ansible_facts['system'] == 'Linux' else '/usr/local/etc/postfix' }}`"
+                    default: "{{ '/etc/postfix' if ansible_facts['system'] == 'Linux' else '/usr/local/etc/postfix' }}"
               hash_maps:
                 description: Postfix hash maps
                 type: dict
                 default: {}
-              main.cf:
+              "main.cf":
                 description: Postfix main.cf configuration
                 type: dict
                 default: {}
@@ -311,12 +334,38 @@ argument_specs:
               banner_string:
                 description: Banner string for MOTD
                 type: str
-                default: "punkt.de Proserver ASCII art"
+                default: |
+                  punkt.de        ____
+                   _ __  _ __ ___/ ___|  ___ _ ____   _____ _ __
+                  | '_ \| '__/ _ \___ \ / _ \ '__\ \ / / _ \ '__|
+                  | |_) | | | (_) |__) |  __/ |   \ V /  __/ |
+                  | .__/|_|  \___/____/ \___|_|    \_/ \___|_|
+                  |_|
               details:
                 description: Additional details for MOTD
                 type: str
-                default: "List of dehydrated domains and system hostnames"
+                default: "{{ (((dehydrated | default({})).domains | default({})).keys() | list + ((dehydrated | default({})).domains | default({})).values() | list | sum(start=[])) | reject('eq', inventory_hostname) | reject('eq', ansible_facts['nodename']) | system_motd_sort_fqdns }}"
       system_ufw_reset:
         description: Global flag to reset UFW firewall
         type: bool
         default: false
+      nodejs:
+        description: Node.js configuration (used by apt tasks)
+        type: dict
+        required: false
+        default: {}
+        options:
+          version:
+            description: Node.js version to install
+            type: str
+            default: null
+      dehydrated:
+        description: Dehydrated SSL certificate configuration (used by MOTD)
+        type: dict
+        required: false
+        default: {}
+        options:
+          domains:
+            description: SSL certificate domains
+            type: dict
+            default: {}
