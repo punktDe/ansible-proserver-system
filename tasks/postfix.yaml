@@ -1,6 +1,6 @@
 ---
 - name: Handle Postfix configuration on FreeBSD
-  when: ansible_system == 'FreeBSD'
+  when: ansible_facts["system"] == 'FreeBSD'
   block:
     - name: Check if Postfix config exists
       ansible.builtin.stat:
@@ -13,11 +13,12 @@
         - name: Disable Sendmail
           vars:
             rc_conf: /etc/rc.conf
-          with_dict:
-            sendmail_enable: "NONE"
-            sendmail_submit_enable: "NO"
-            sendmail_outbound_enable: "NO"
-            sendmail_msp_queue_enable: "NO"
+            sendmail_config:
+              sendmail_enable: "NONE"
+              sendmail_submit_enable: "NO"
+              sendmail_outbound_enable: "NO"
+              sendmail_msp_queue_enable: "NO"
+          loop: "{{ sendmail_config | dict2items }}"
           loop_control:
             label: '{{ rc_conf }} {{ item.key }}="{{ item.value }}"'
           ansible.builtin.lineinfile:
@@ -59,12 +60,13 @@
         - name: Template mailer config
           vars:
             dest: /etc/mail/mailer.conf
-          with_dict:
-            sendmail: /usr/local/sbin/sendmail
-            mailq: /usr/local/sbin/sendmail
-            newaliases: /usr/local/sbin/sendmail
-            hoststat: /usr/local/sbin/sendmail
-            purgestat: /usr/local/sbin/sendmail
+            mailer_config:
+              sendmail: /usr/local/sbin/sendmail
+              mailq: /usr/local/sbin/sendmail
+              newaliases: /usr/local/sbin/sendmail
+              hoststat: /usr/local/sbin/sendmail
+              purgestat: /usr/local/sbin/sendmail
+          loop: "{{ mailer_config | dict2items }}"
           loop_control:
             label: "{{ dest }} {{ item.key }}={{ item.value }}"
           ansible.builtin.lineinfile:
@@ -73,7 +75,7 @@
             line: "{{ item.key }} {{ item.value }}"
 
 - name: Install Postfix
-  when: ansible_os_family == 'Debian'
+  when: ansible_facts["os_family"] == 'Debian'
   ansible.builtin.package:
     name: postfix
 

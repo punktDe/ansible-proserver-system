@@ -1,7 +1,7 @@
 ---
 system:
   root_group: >-
-    {%- if ansible_os_family == 'Debian' -%}
+    {%- if ansible_facts["os_family"] == 'Debian' -%}
       root
     {%- else -%}
       wheel
@@ -14,18 +14,18 @@ system:
   rsyslog:
     precise_timestamps: no
   features:
-    rsyslog: "{{ ansible_system == 'Linux' }}"
-    sshd: "{{ ansible_system == 'Linux' }}"
+    rsyslog: "{{ ansible_facts['system'] == 'Linux' }}"
+    sshd: "{{ ansible_facts['system'] == 'Linux' }}"
     proserver_fact: no
     hostname: yes
     timezone: yes
-    netplan: "{{ ansible_distribution == 'Ubuntu' }}"
+    netplan: "{{ ansible_facts['distribution'] == 'Ubuntu' }}"
     systemd_resolved: no
-    ufw: "{{ ansible_distribution == 'Ubuntu' }}"
-    sysctl: "{{ ansible_system == 'Linux' }}"
+    ufw: "{{ ansible_facts['distribution'] == 'Ubuntu' }}"
+    sysctl: "{{ ansible_facts['system'] == 'Linux' }}"
     hosts: yes
     environment: yes
-    apt: "{{ ansible_os_family == 'Debian' }}"
+    apt: "{{ ansible_facts['os_family'] == 'Debian' }}"
     proserver_user: no
     postfix: no
     users: yes
@@ -36,14 +36,14 @@ system:
     unattended_upgrades: no
   prefix:
     sudoers: >-
-      {%- if ansible_system == 'Linux' -%}
+      {%- if ansible_facts['system'] == 'Linux' -%}
         /etc
       {%- else -%}
         /usr/local/etc
       {%- endif -%}
   proserver_fact:
     python: >-
-      {%- if ansible_distribution == 'Ubuntu' and ansible_distribution_version == '18.04' -%}
+      {%- if ansible_facts['distribution'] == 'Ubuntu' and ansible_facts['distribution_version'] == '18.04' -%}
         /usr/bin/env python3.8
       {%- else -%}
         /usr/bin/env python3
@@ -83,7 +83,7 @@ system:
   postfix:
     prefix:
       config: >-
-        {%- if ansible_system == 'Linux' -%}
+        {%- if ansible_facts['system'] == 'Linux' -%}
           /etc/postfix
         {%- else -%}
           /usr/local/etc/postfix
@@ -103,5 +103,5 @@ system:
       | |_) | | | (_) |__) |  __/ |   \ V /  __/ |
       | .__/|_|  \___/____/ \___|_|    \_/ \___|_|
       |_|
-    details: "{{ (((dehydrated | default({})).domains | default({})).keys() | list + ((dehydrated | default({})).domains | default({})).values() | list | sum(start=[])) | reject('eq', inventory_hostname) | reject('eq', ansible_nodename) | system_motd_sort_fqdns }}"
+    details: "{{ (((dehydrated | default({})).domains | default({})).keys() | list + ((dehydrated | default({})).domains | default({})).values() | list | sum(start=[])) | reject('eq', inventory_hostname) | reject('eq', ansible_facts['nodename']) | system_motd_sort_fqdns }}"
 system_ufw_reset: no

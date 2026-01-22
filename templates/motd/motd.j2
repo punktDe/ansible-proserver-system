@@ -1,9 +1,9 @@
-{% if ansible_system == 'FreeBSD' %}
+{% if ansible_facts["system"] == 'FreeBSD' %}
 {{ system_motd_uname_shell_result.stdout }}
 {% endif %}
 {{ system.motd.banner_string }}
 
-{% if system.motd.project %}{{ system.motd.project }} / {% endif %}{{ inventory_hostname }}{% if inventory_hostname != ansible_nodename %} ({{ ansible_nodename }}){% endif %}
+{% if system.motd.project %}{{ system.motd.project }} / {% endif %}{{ inventory_hostname }}{% if inventory_hostname != ansible_facts["nodename"] %} ({{ ansible_facts["nodename"] }}){% endif %}
 
 {% filter trim %}
 {% for detail in system.motd.details %}

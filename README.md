@@ -24,7 +24,7 @@ system role for Proserver
 
 |Option|Description|Type|Required|Default|
 |---|---|---|---|---|
-| `root_group` | Root group name (automatically determined based on OS) | str | no | {{ 'root' if ansible_os_family == 'Debian' else 'wheel' }} |
+| `root_group` | Root group name (automatically determined based on OS) | str | no | {{ 'root' if ansible_facts['os_family'] == 'Debian' else 'wheel' }} |
 | `sshd` | SSH daemon configuration | dict of 'sshd' options | no | {} |
 | `rsyslog` | Rsyslog configuration | dict of 'rsyslog' options | no | {} |
 | `features` | Feature flags to enable/disable various role components | dict of 'features' options | no | {} |
@@ -63,18 +63,18 @@ system role for Proserver
 
 |Option|Description|Type|Required|Default|
 |---|---|---|---|---|
-| `rsyslog` | Enable rsyslog configuration | bool | no | {{ ansible_system == 'Linux' }} |
-| `sshd` | Enable SSH daemon configuration | bool | no | {{ ansible_system == 'Linux' }} |
+| `rsyslog` | Enable rsyslog configuration | bool | no | {{ ansible_facts['system'] == 'Linux' }} |
+| `sshd` | Enable SSH daemon configuration | bool | no | {{ ansible_facts['system'] == 'Linux' }} |
 | `proserver_fact` | Enable proserver fact generation | bool | no | False |
 | `hostname` | Enable hostname configuration | bool | no | True |
 | `timezone` | Enable timezone configuration | bool | no | True |
-| `netplan` | Enable netplan configuration | bool | no | {{ ansible_distribution == 'Ubuntu' }} |
+| `netplan` | Enable netplan configuration | bool | no | {{ ansible_facts['distribution'] == 'Ubuntu' }} |
 | `systemd_resolved` | Enable systemd-resolved configuration | bool | no | False |
-| `ufw` | Enable UFW firewall configuration | bool | no | {{ ansible_distribution == 'Ubuntu' }} |
-| `sysctl` | Enable sysctl configuration | bool | no | {{ ansible_system == 'Linux' }} |
+| `ufw` | Enable UFW firewall configuration | bool | no | {{ ansible_facts['distribution'] == 'Ubuntu' }} |
+| `sysctl` | Enable sysctl configuration | bool | no | {{ ansible_facts['system'] == 'Linux' }} |
 | `hosts` | Enable /etc/hosts configuration | bool | no | True |
 | `environment` | Enable system-wide environment variables | bool | no | True |
-| `apt` | Enable APT package management (Debian/Ubuntu only) | bool | no | {{ ansible_os_family == 'Debian' }} |
+| `apt` | Enable APT package management (Debian/Ubuntu only) | bool | no | {{ ansible_facts['os_family'] == 'Debian' }} |
 | `proserver_user` | Enable proserver user configuration | bool | no | False |
 | `postfix` | Enable Postfix mail server configuration | bool | no | False |
 | `users` | Enable user management | bool | no | True |
@@ -88,13 +88,13 @@ system role for Proserver
 
 |Option|Description|Type|Required|Default|
 |---|---|---|---|---|
-| `sudoers` | Path prefix for sudoers configuration | str | no | {{ '/etc' if ansible_system == 'Linux' else '/usr/local/etc' }} |
+| `sudoers` | Path prefix for sudoers configuration | str | no | {{ '/etc' if ansible_facts['system'] == 'Linux' else '/usr/local/etc' }} |
 
 #### Options for `system.proserver_fact`
 
 |Option|Description|Type|Required|Default|
 |---|---|---|---|---|
-| `python` | Python interpreter path for proserver facts | str | no | {{ '/usr/bin/env python3.8' if (ansible_distribution == 'Ubuntu' and ansible_distribution_version == '18.04') else '/usr/bin/env python3' }} |
+| `python` | Python interpreter path for proserver facts | str | no | {{ '/usr/bin/env python3.8' if (ansible_facts['distribution'] == 'Ubuntu' and ansible_facts['distribution_version'] == '18.04') else '/usr/bin/env python3' }} |
 
 #### Options for `system.network`
 
@@ -157,7 +157,7 @@ system role for Proserver
 
 |Option|Description|Type|Required|Default|
 |---|---|---|---|---|
-| `config` | Postfix configuration directory path | str | no | `{{ '/etc/postfix' if ansible_system == 'Linux' else '/usr/local/etc/postfix' }}` |
+| `config` | Postfix configuration directory path | str | no | `{{ '/etc/postfix' if ansible_facts['system'] == 'Linux' else '/usr/local/etc/postfix' }}` |
 
 #### Options for `system.motd`
 
