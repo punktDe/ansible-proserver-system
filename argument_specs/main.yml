@@ -301,7 +301,7 @@ argument_specs:
                 description: Postfix hash maps
                 type: dict
                 default: {}
-              main.cf:
+              "main.cf":
                 description: Postfix main.cf configuration
                 type: dict
                 default: {}
