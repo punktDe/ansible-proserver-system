@@ -4,7 +4,7 @@
     name: ufw
 
 - name: Reset UFW
-  when: system.ufw.reset
+  when: system.ufw.reset is defined and system.ufw.reset
   community.general.ufw:
     state: reset
 
