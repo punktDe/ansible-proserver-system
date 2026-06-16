@@ -1,0 +1,30 @@
+---
+- name: Find installed OpenJDK directories
+  ansible.builtin.find:
+    paths: "{{ system.javavms.openjdk_path }}"
+    file_type: directory
+    patterns: "^openjdk[0-9]+$"
+    use_regex: yes
+    recurse: no
+  register: system_javavms_openjdk_directories
+
+- name: Template javavms
+  ansible.builtin.copy:
+    owner: root
+    group: "{{ system.root_group }}"
+    mode: "0644"
+    dest: "{{ system.javavms.path }}"
+    content: |
+      {% for version in system_javavms_versions %}
+      {{ system.javavms.openjdk_path }}/openjdk{{ version }}/bin/java
+      {% endfor %}
+  vars:
+    system_javavms_versions: >-
+      {{
+        system_javavms_openjdk_directories.files
+        | map(attribute='path')
+        | map('basename')
+        | map('regex_replace', '^openjdk', '')
+        | map('int')
+        | sort(reverse=true)
+      }}
