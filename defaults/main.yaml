@@ -34,6 +34,7 @@ system:
     authorized_keys_delete: no
     motd: yes
     unattended_upgrades: no
+    javavms: "{{ ansible_facts['system'] == 'FreeBSD' }}"
   prefix:
     sudoers: >-
       {%- if ansible_facts['system'] == 'Linux' -%}
@@ -94,6 +95,9 @@ system:
   groups: {}
   users: {}
   users_delete: []
+  javavms:
+    path: /usr/local/etc/javavms
+    openjdk_path: /usr/local
   motd:
     project:
     banner_string: |

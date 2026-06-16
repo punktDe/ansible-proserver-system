@@ -119,6 +119,10 @@ argument_specs:
                 description: Enable unattended upgrades configuration (Debian/Ubuntu only)
                 type: bool
                 default: false
+              javavms:
+                description: Enable javavms configuration (FreeBSD only)
+                type: bool
+                default: "{{ ansible_facts['system'] == 'FreeBSD' }}"
           prefix:
             description: Path prefixes for various system components
             type: dict
@@ -299,6 +303,19 @@ argument_specs:
             type: list
             elements: str
             default: []
+          javavms:
+            description: FreeBSD javavms configuration
+            type: dict
+            default: {}
+            options:
+              path:
+                description: Path to the javavms configuration file
+                type: str
+                default: /usr/local/etc/javavms
+              openjdk_path:
+                description: Directory containing OpenJDK installation directories
+                type: str
+                default: /usr/local
           motd:
             description: Message of the day configuration
             type: dict

@@ -45,6 +45,7 @@ system role for Proserver
 | `groups` | System groups to create | dict | no |  |
 | `users` | System users to create | dict | no |  |
 | `users_delete` | List of users to delete | list of 'str' | no | [] |
+| `javavms` | FreeBSD javavms configuration | dict of 'javavms' options | no | {} |
 | `motd` | Message of the day configuration | dict of 'motd' options | no | {} |
 
 #### Options for `system.sshd`
@@ -83,6 +84,7 @@ system role for Proserver
 | `authorized_keys_delete` | Enable deletion of SSH authorized keys | bool | no | False |
 | `motd` | Enable message of the day configuration | bool | no | True |
 | `unattended_upgrades` | Enable unattended upgrades configuration (Debian/Ubuntu only) | bool | no | False |
+| `javavms` | Enable javavms configuration (FreeBSD only) | bool | no | {{ ansible_facts['system'] == 'FreeBSD' }} |
 
 #### Options for `system.prefix`
 
@@ -158,6 +160,13 @@ system role for Proserver
 |Option|Description|Type|Required|Default|
 |---|---|---|---|---|
 | `config` | Postfix configuration directory path | str | no | `{{ '/etc/postfix' if ansible_facts['system'] == 'Linux' else '/usr/local/etc/postfix' }}` |
+
+#### Options for `system.javavms`
+
+|Option|Description|Type|Required|Default|
+|---|---|---|---|---|
+| `path` | Path to the javavms configuration file | str | no | /usr/local/etc/javavms |
+| `openjdk_path` | Directory containing OpenJDK installation directories | str | no | /usr/local |
 
 #### Options for `system.motd`
 

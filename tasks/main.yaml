@@ -37,6 +37,10 @@
   ansible.builtin.include_tasks: unattended_upgrades.yaml
   when: system.features.unattended_upgrades
 
+- name: Configure Java VM wrapper
+  ansible.builtin.include_tasks: javavms.yaml
+  when: system.features.javavms
+
 - name: Configure UFW (Ubuntu)
   ansible.builtin.include_tasks: ufw.yaml
   when: system.features.ufw
