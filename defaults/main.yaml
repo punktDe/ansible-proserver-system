@@ -95,6 +95,8 @@ system:
   groups: {}
   users: {}
   users_delete: []
+  authorized_keys_remove: []
+  authorized_keys_remove_from_users: []
   javavms:
     path: /usr/local/etc/javavms
     openjdk_path: /usr/local

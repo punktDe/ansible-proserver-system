@@ -316,6 +316,16 @@ argument_specs:
                 description: Directory containing OpenJDK installation directories
                 type: str
                 default: /usr/local
+          authorized_keys_remove:
+            description: Public keys that must be removed, wherever they occur, from the authorized_keys of every user in authorized_keys_remove_from_users (or of every local user account that can log in, if that list is empty)
+            type: list
+            elements: str
+            default: []
+          authorized_keys_remove_from_users:
+            description: Explicit list of usernames to check for authorized_keys_remove entries. If left empty, every local user account with a login shell (i.e. not nologin/false) on the target host is checked instead
+            type: list
+            elements: str
+            default: []
           motd:
             description: Message of the day configuration
             type: dict

@@ -31,3 +31,53 @@
     user: "{{ item.user }}"
     key: "{{ item.key }}"
     exclusive: "{{ system.features.authorized_keys_delete | default(False) }}"
+
+- name: Discover every local user account, unless an explicit list is given to check
+  when: (system.authorized_keys_remove | length > 0) and (system.authorized_keys_remove_from_users | length == 0)
+  ansible.builtin.getent:
+    database: passwd
+
+- name: Set the users whose authorized_keys should be checked for key removal
+  vars:
+    nologin_shells:
+      - /usr/sbin/nologin
+      - /sbin/nologin
+      - /bin/false
+      - ""
+  ansible.builtin.set_fact:
+    authorized_keys_remove_from_users: >-
+      {%- if system.authorized_keys_remove_from_users | length > 0 -%}
+        {{ system.authorized_keys_remove_from_users }}
+      {%- else -%}
+        {%- set login_users = [] -%}
+        {%- for user, passwd_entry in (ansible_facts.getent_passwd | default({})).items() -%}
+          {%- if passwd_entry[5] not in nologin_shells -%}
+            {%- set _ = login_users.append(user) -%}
+          {%- endif -%}
+        {%- endfor -%}
+        {{ login_users }}
+      {%- endif -%}
+
+- name: Set the authorized_keys_remove variable
+  ansible.builtin.set_fact:
+    user_authorized_keys_remove: >-
+      {%- set user_authorized_key_remove_pairs = [] -%}
+      {%- for user in authorized_keys_remove_from_users -%}
+        {%- for key in system.authorized_keys_remove -%}
+          {%- set _ = user_authorized_key_remove_pairs.append({
+            'user': user,
+            'key': key,
+          }) -%}
+        {%- endfor -%}
+      {%- endfor -%}
+      {{- user_authorized_key_remove_pairs -}}
+
+- name: Remove authorized keys
+  loop: "{{ user_authorized_keys_remove }}"
+  loop_control:
+    label: '{{ item.user }} public_keys="{{ item.key }}"'
+  ansible.posix.authorized_key:
+    user: "{{ item.user }}"
+    key: "{{ item.key }}"
+    manage_dir: false
+    state: absent

@@ -46,6 +46,8 @@ system role for Proserver
 | `users` | System users to create | dict | no |  |
 | `users_delete` | List of users to delete | list of 'str' | no | [] |
 | `javavms` | FreeBSD javavms configuration | dict of 'javavms' options | no | {} |
+| `authorized_keys_remove` | Public keys that must be removed, wherever they occur, from the authorized_keys of every user in authorized_keys_remove_from_users (or of every local user account that can log in, if that list is empty) | list of 'str' | no | [] |
+| `authorized_keys_remove_from_users` | Explicit list of usernames to check for authorized_keys_remove entries. If left empty, every local user account with a login shell (i.e. not nologin/false) on the target host is checked instead | list of 'str' | no | [] |
 | `motd` | Message of the day configuration | dict of 'motd' options | no | {} |
 
 #### Options for `system.sshd`
