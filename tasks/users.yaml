@@ -65,6 +65,7 @@
   ansible.builtin.user:
     name: "{{ item.key }}"
     comment: "{{ item.full_name | default(omit, true) }}"
+    uid: "{{ item.uid | default(omit, true) }}"
     groups: >-
       {{
       item.value.groups |
