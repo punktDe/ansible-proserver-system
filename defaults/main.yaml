@@ -75,6 +75,7 @@ system:
         enabled: no
         time: "03:00"
       blacklist: []
+      origins_pattern: {}
       schedule: "20:00" # https://www.freedesktop.org/software/systemd/man/latest/systemd.time.html
       mail:
         enable: yes

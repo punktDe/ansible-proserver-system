@@ -136,6 +136,7 @@ system role for Proserver
 | `auto_clean` | Whether to automatically run apt-clean after the updates are installed | bool | no | True |
 | `auto_reboot` | Automatic reboot configuration | dict | no | {"enabled": true, "time": "03:00"} |
 | `blacklist` | A list of packages that shouldn't be automatically updated | list of '' | no | [] |
+| `origins_pattern` | Additional repositories to update from, e.g. third-party repositories (dict with arbitrary names as keys and Unattended-Upgrade::Origins-Pattern entries as values, e.g. 'origin=MariaDB,codename=${distro_codename}'; set a value to null to disable it) | dict | no | {} |
 | `schedule` | Update schedule in systemd OnCalendar format | str | no | 20:00 |
 | `mail` |  | dict of 'mail' options | no |  |
 
