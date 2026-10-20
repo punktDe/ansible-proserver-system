@@ -24,101 +24,101 @@ system role for Proserver
 
 |Option|Description|Type|Required|Default|
 |---|---|---|---|---|
-| `root_group` | Root group name (automatically determined based on OS) | str | no | {{ 'root' if ansible_facts['os_family'] == 'Debian' else 'wheel' }} |
-| `sshd` | SSH daemon configuration | dict of 'sshd' options | no | {} |
-| `rsyslog` | Rsyslog configuration | dict of 'rsyslog' options | no | {} |
-| `features` | Feature flags to enable/disable various role components | dict of 'features' options | no | {} |
-| `prefix` | Path prefixes for various system components | dict of 'prefix' options | no | {} |
-| `proserver_fact` | Proserver fact configuration | dict of 'proserver_fact' options | no | {} |
-| `network` | Network configuration | dict of 'network' options | no | {} |
-| `hostname` | Hostname configuration | str | no | None |
-| `timezone` | System timezone | str | no | None |
+| `root_group` | Root group name (automatically determined based on OS) | str | no | `{{ 'root' if ansible_facts['os_family'] == 'Debian' else 'wheel' }}` |
+| `sshd` | SSH daemon configuration | dict of `sshd` [options](#options-for-main--system--sshd) | no | `{}` |
+| `rsyslog` | Rsyslog configuration | dict of `rsyslog` [options](#options-for-main--system--rsyslog) | no | `{}` |
+| `features` | Feature flags to enable/disable various role components | dict of `features` [options](#options-for-main--system--features) | no | `{}` |
+| `prefix` | Path prefixes for various system components | dict of `prefix` [options](#options-for-main--system--prefix) | no | `{}` |
+| `proserver_fact` | Proserver fact configuration | dict of `proserver_fact` [options](#options-for-main--system--proserver_fact) | no | `{}` |
+| `network` | Network configuration | dict of `network` [options](#options-for-main--system--network) | no | `{}` |
+| `hostname` | Hostname configuration | str | no | `None` |
+| `timezone` | System timezone | str | no | `None` |
 | `netplan` | Netplan configuration | dict | no |  |
-| `ufw` | UFW firewall configuration | dict of 'ufw' options | no | {} |
+| `ufw` | UFW firewall configuration | dict of `ufw` [options](#options-for-main--system--ufw) | no | `{}` |
 | `sysctl` | Sysctl kernel parameters | dict | no |  |
 | `hosts` | /etc/hosts entries | dict | no |  |
 | `environment` | System-wide environment variables | dict | no |  |
-| `apt` | APT package management configuration | dict of 'apt' options | no | {} |
-| `unattended_upgrades` | Unattended upgrades configuration | dict of 'unattended_upgrades' options | no | {} |
-| `postfix` | Postfix mail server configuration | dict of 'postfix' options | no | {} |
+| `apt` | APT package management configuration | dict of `apt` [options](#options-for-main--system--apt) | no | `{}` |
+| `unattended_upgrades` | Unattended upgrades configuration | dict of `unattended_upgrades` [options](#options-for-main--system--unattended_upgrades) | no | `{}` |
+| `postfix` | Postfix mail server configuration | dict of `postfix` [options](#options-for-main--system--postfix) | no | `{}` |
 | `sudoers` | Sudoers configuration files | dict | no |  |
 | `groups` | System groups to create | dict | no |  |
 | `users` | System users to create | dict | no |  |
-| `users_delete` | List of users to delete | list of 'str' | no | [] |
-| `javavms` | FreeBSD javavms configuration | dict of 'javavms' options | no | {} |
-| `motd` | Message of the day configuration | dict of 'motd' options | no | {} |
+| `users_delete` | List of users to delete | list of `str` | no | `[]` |
+| `javavms` | FreeBSD javavms configuration | dict of `javavms` [options](#options-for-main--system--javavms) | no | `{}` |
+| `motd` | Message of the day configuration | dict of `motd` [options](#options-for-main--system--motd) | no | `{}` |
 
 #### Options for `system.sshd`
 
 |Option|Description|Type|Required|Default|
 |---|---|---|---|---|
-| `config` | SSH daemon configuration parameters | dict | no | {"MaxStartups": "100:30:100", "PasswordAuthentication": false, "PermitRootLogin": false} |
+| `config` | SSH daemon configuration parameters | dict | no | `{"MaxStartups": "100:30:100", "PasswordAuthentication": false, "PermitRootLogin": false}` |
 
 #### Options for `system.rsyslog`
 
 |Option|Description|Type|Required|Default|
 |---|---|---|---|---|
-| `precise_timestamps` | Enable precise timestamps in rsyslog | bool | no | False |
+| `precise_timestamps` | Enable precise timestamps in rsyslog | bool | no | `False` |
 
 #### Options for `system.features`
 
 |Option|Description|Type|Required|Default|
 |---|---|---|---|---|
-| `rsyslog` | Enable rsyslog configuration | bool | no | {{ ansible_facts['system'] == 'Linux' }} |
-| `sshd` | Enable SSH daemon configuration | bool | no | {{ ansible_facts['system'] == 'Linux' }} |
-| `proserver_fact` | Enable proserver fact generation | bool | no | False |
-| `hostname` | Enable hostname configuration | bool | no | True |
-| `timezone` | Enable timezone configuration | bool | no | True |
-| `netplan` | Enable netplan configuration | bool | no | {{ ansible_facts['distribution'] == 'Ubuntu' }} |
-| `systemd_resolved` | Enable systemd-resolved configuration | bool | no | False |
-| `ufw` | Enable UFW firewall configuration | bool | no | {{ ansible_facts['distribution'] == 'Ubuntu' }} |
-| `sysctl` | Enable sysctl configuration | bool | no | {{ ansible_facts['system'] == 'Linux' }} |
-| `hosts` | Enable /etc/hosts configuration | bool | no | True |
-| `environment` | Enable system-wide environment variables | bool | no | True |
-| `apt` | Enable APT package management (Debian/Ubuntu only) | bool | no | {{ ansible_facts['os_family'] == 'Debian' }} |
-| `proserver_user` | Enable proserver user configuration | bool | no | False |
-| `postfix` | Enable Postfix mail server configuration | bool | no | False |
-| `users` | Enable user management | bool | no | True |
-| `sudoers` | Enable sudoers configuration | bool | no | True |
-| `authorized_keys` | Enable SSH authorized keys management | bool | no | True |
-| `authorized_keys_delete` | Enable deletion of SSH authorized keys | bool | no | False |
-| `motd` | Enable message of the day configuration | bool | no | True |
-| `unattended_upgrades` | Enable unattended upgrades configuration (Debian/Ubuntu only) | bool | no | False |
-| `javavms` | Enable javavms configuration (FreeBSD only) | bool | no | {{ ansible_facts['system'] == 'FreeBSD' }} |
+| `rsyslog` | Enable rsyslog configuration | bool | no | `{{ ansible_facts['system'] == 'Linux' }}` |
+| `sshd` | Enable SSH daemon configuration | bool | no | `{{ ansible_facts['system'] == 'Linux' }}` |
+| `proserver_fact` | Enable proserver fact generation | bool | no | `False` |
+| `hostname` | Enable hostname configuration | bool | no | `True` |
+| `timezone` | Enable timezone configuration | bool | no | `True` |
+| `netplan` | Enable netplan configuration | bool | no | `{{ ansible_facts['distribution'] == 'Ubuntu' }}` |
+| `systemd_resolved` | Enable systemd-resolved configuration | bool | no | `False` |
+| `ufw` | Enable UFW firewall configuration | bool | no | `{{ ansible_facts['distribution'] == 'Ubuntu' }}` |
+| `sysctl` | Enable sysctl configuration | bool | no | `{{ ansible_facts['system'] == 'Linux' }}` |
+| `hosts` | Enable /etc/hosts configuration | bool | no | `True` |
+| `environment` | Enable system-wide environment variables | bool | no | `True` |
+| `apt` | Enable APT package management (Debian/Ubuntu only) | bool | no | `{{ ansible_facts['os_family'] == 'Debian' }}` |
+| `proserver_user` | Enable proserver user configuration | bool | no | `False` |
+| `postfix` | Enable Postfix mail server configuration | bool | no | `False` |
+| `users` | Enable user management | bool | no | `True` |
+| `sudoers` | Enable sudoers configuration | bool | no | `True` |
+| `authorized_keys` | Enable SSH authorized keys management | bool | no | `True` |
+| `authorized_keys_delete` | Enable deletion of SSH authorized keys | bool | no | `False` |
+| `motd` | Enable message of the day configuration | bool | no | `True` |
+| `unattended_upgrades` | Enable unattended upgrades configuration (Debian/Ubuntu only) | bool | no | `False` |
+| `javavms` | Enable javavms configuration (FreeBSD only) | bool | no | `{{ ansible_facts['system'] == 'FreeBSD' }}` |
 
 #### Options for `system.prefix`
 
 |Option|Description|Type|Required|Default|
 |---|---|---|---|---|
-| `sudoers` | Path prefix for sudoers configuration | str | no | {{ '/etc' if ansible_facts['system'] == 'Linux' else '/usr/local/etc' }} |
+| `sudoers` | Path prefix for sudoers configuration | str | no | `{{ '/etc' if ansible_facts['system'] == 'Linux' else '/usr/local/etc' }}` |
 
 #### Options for `system.proserver_fact`
 
 |Option|Description|Type|Required|Default|
 |---|---|---|---|---|
-| `python` | Python interpreter path for proserver facts | str | no | {{ '/usr/bin/env python3.8' if (ansible_facts['distribution'] == 'Ubuntu' and ansible_facts['distribution_version'] == '18.04') else '/usr/bin/env python3' }} |
+| `python` | Python interpreter path for proserver facts | str | no | `{{ '/usr/bin/env python3.8' if (ansible_facts['distribution'] == 'Ubuntu' and ansible_facts['distribution_version'] == '18.04') else '/usr/bin/env python3' }}` |
 
 #### Options for `system.network`
 
 |Option|Description|Type|Required|Default|
 |---|---|---|---|---|
-| `public_interfaces` | List of public network interfaces | list of 'str' | no | [] |
-| `public_subnets` | List of public subnets | list of 'str' | no | [] |
+| `public_interfaces` | List of public network interfaces | list of `str` | no | `[]` |
+| `public_subnets` | List of public subnets | list of `str` | no | `[]` |
 
 #### Options for `system.ufw`
 
 |Option|Description|Type|Required|Default|
 |---|---|---|---|---|
-| `reset` | Reset UFW to default state | bool | no | {{ system_ufw_reset | bool }} |
-| `state` | UFW state (enabled/disabled) | str | no | None |
-| `policy` | UFW default policy | str | no | None |
+| `reset` | Reset UFW to default state | bool | no | `{{ system_ufw_reset | bool }}` |
+| `state` | UFW state (enabled/disabled) | str | no | `None` |
+| `policy` | UFW default policy | str | no | `None` |
 | `rules` | UFW firewall rules | dict | no |  |
 
 #### Options for `system.apt`
 
 |Option|Description|Type|Required|Default|
 |---|---|---|---|---|
-| `proxy` | APT proxy configuration | str | no | None |
+| `proxy` | APT proxy configuration | str | no | `None` |
 | `packages` | APT packages to install (dict with package names as keys and boolean values) | dict | no |  |
 | `version_locks` | APT package version locks (dict with package names as keys and version constraint values) | dict | no |  |
 
@@ -126,32 +126,33 @@ system role for Proserver
 
 |Option|Description|Type|Required|Default|
 |---|---|---|---|---|
-| `config` | Unattended upgrades configuration parameters | dict of 'config' options | no |  |
+| `config` | Unattended upgrades configuration parameters | dict of `config` [options](#options-for-main--system--unattended_upgrades--config) | no |  |
 
 #### Options for `system.unattended_upgrades.config`
 
 |Option|Description|Type|Required|Default|
 |---|---|---|---|---|
-| `feature_updates` | By default, only security updates are installed. Setting this to 'true' will install feature updates as well | bool | no | False |
-| `auto_clean` | Whether to automatically run apt-clean after the updates are installed | bool | no | True |
-| `auto_reboot` | Automatic reboot configuration | dict | no | {"enabled": true, "time": "03:00"} |
-| `blacklist` | A list of packages that shouldn't be automatically updated | list of '' | no | [] |
-| `schedule` | Update schedule in systemd OnCalendar format | str | no | 20:00 |
-| `mail` |  | dict of 'mail' options | no |  |
+| `feature_updates` | By default, only security updates are installed. Setting this to 'true' will install feature updates as well | bool | no | `False` |
+| `auto_clean` | Whether to automatically run apt-clean after the updates are installed | bool | no | `True` |
+| `auto_reboot` | Automatic reboot configuration | dict | no | `{"enabled": true, "time": "03:00"}` |
+| `blacklist` | A list of packages that shouldn't be automatically updated | list of `` | no | `[]` |
+| `origins_pattern` | Additional repositories to update from, e.g. third-party repositories (dict with arbitrary names as keys and Unattended-Upgrade::Origins-Pattern entries as values, e.g. 'origin=MariaDB,codename=${distro_codename}'; set a value to null to disable it) | dict | no |  |
+| `schedule` | Update schedule in systemd OnCalendar format | str | no | `20:00` |
+| `mail` |  | dict of `mail` [options](#options-for-main--system--unattended_upgrades--config--mail) | no |  |
 
 #### Options for `system.unattended_upgrades.config.mail`
 
 |Option|Description|Type|Required|Default|
 |---|---|---|---|---|
-| `enable` | Enable unattended_upgrades mail reports | bool | no | True |
-| `only_on_error` | Only send e-mails about errors | bool | no | True |
-| `to` | The email address to send the e-mails to | str | no | None |
+| `enable` | Enable unattended_upgrades mail reports | bool | no | `True` |
+| `only_on_error` | Only send e-mails about errors | bool | no | `True` |
+| `to` | The email address to send the e-mails to | str | no | `None` |
 
 #### Options for `system.postfix`
 
 |Option|Description|Type|Required|Default|
 |---|---|---|---|---|
-| `prefix` | Postfix configuration path prefix | dict of 'prefix' options | no | {} |
+| `prefix` | Postfix configuration path prefix | dict of `prefix` [options](#options-for-main--system--postfix--prefix) | no | `{}` |
 | `hash_maps` | Postfix hash maps | dict | no |  |
 | `main.cf` | Postfix main.cf configuration | dict | no |  |
 
@@ -159,22 +160,22 @@ system role for Proserver
 
 |Option|Description|Type|Required|Default|
 |---|---|---|---|---|
-| `config` | Postfix configuration directory path | str | no | `{{ '/etc/postfix' if ansible_facts['system'] == 'Linux' else '/usr/local/etc/postfix' }}` |
+| `config` | Postfix configuration directory path | str | no | ``{{ '/etc/postfix' if ansible_facts['system'] == 'Linux' else '/usr/local/etc/postfix' }}`` |
 
 #### Options for `system.javavms`
 
 |Option|Description|Type|Required|Default|
 |---|---|---|---|---|
-| `path` | Path to the javavms configuration file | str | no | /usr/local/etc/javavms |
-| `openjdk_path` | Directory containing OpenJDK installation directories | str | no | /usr/local |
+| `path` | Path to the javavms configuration file | str | no | `/usr/local/etc/javavms` |
+| `openjdk_path` | Directory containing OpenJDK installation directories | str | no | `/usr/local` |
 
 #### Options for `system.motd`
 
 |Option|Description|Type|Required|Default|
 |---|---|---|---|---|
-| `project` | Project name for MOTD | str | no | None |
-| `banner_string` | Banner string for MOTD | str | no | punkt.de Proserver ASCII art |
-| `details` | Additional details for MOTD | str | no | List of dehydrated domains and system hostnames |
+| `project` | Project name for MOTD | str | no | `None` |
+| `banner_string` | Banner string for MOTD | str | no | `punkt.de Proserver ASCII art` |
+| `details` | Additional details for MOTD | str | no | `List of dehydrated domains and system hostnames` |
 
 ## Dependencies
 None.

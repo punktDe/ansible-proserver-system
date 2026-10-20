@@ -15,6 +15,13 @@ Unattended-Upgrade::Allowed-Origins {
 {% endif %}
 };
 
+Unattended-Upgrade::Origins-Pattern {
+{% for name, pattern in system.unattended_upgrades.config.origins_pattern | default({}) | dictsort if pattern %}
+  // {{ name }}
+  "{{ pattern }}";
+{% endfor %}
+};
+
 Unattended-Upgrade::Package-Blacklist{
 {% for package in system.unattended_upgrades.config.blacklist %}
       "{{ package }}";
