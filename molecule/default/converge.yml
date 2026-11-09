@@ -1,6 +1,17 @@
 ---
 - name: Converge
   hosts: all
+  vars:
+    system:
+      services:
+        molecule-disable:
+          state: stopped
+          enabled: false
+        molecule-enable:
+          state: started
+          enabled: true
+        # null entries are skipped
+        molecule-missing:
   environment:
     GITHUB_ACTIONS: "maybe"
     ANSIBLE_HASH_BEHAVIOUR: merge

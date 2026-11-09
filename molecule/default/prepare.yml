@@ -1,0 +1,35 @@
+---
+- name: Prepare
+  hosts: all
+  tasks:
+    - name: Install dummy services for the services feature test
+      ansible.builtin.copy:
+        dest: "/etc/systemd/system/{{ item }}.service"
+        owner: root
+        group: root
+        mode: "0644"
+        content: |
+          [Unit]
+          Description=Dummy service for the molecule test
+
+          [Service]
+          ExecStart=/bin/sleep infinity
+
+          [Install]
+          WantedBy=multi-user.target
+      loop:
+        - molecule-disable
+        - molecule-enable
+
+    - name: Start and enable the service the role should disable
+      ansible.builtin.systemd_service:
+        name: molecule-disable
+        state: started
+        enabled: true
+        daemon_reload: true
+
+    - name: Stop and disable the service the role should enable
+      ansible.builtin.systemd_service:
+        name: molecule-enable
+        state: stopped
+        enabled: false

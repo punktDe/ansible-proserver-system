@@ -45,6 +45,7 @@ system role for Proserver
 | `groups` | System groups to create | dict | no |  |
 | `users` | System users to create | dict | no |  |
 | `users_delete` | List of users to delete | list of `str` | no | `[]` |
+| `services` | Services to manage, keyed by service name. Each value may set `state` (started, stopped, restarted, reloaded) and/or `enabled` (bool); omitted keys are left untouched. Set a service to null to drop an entry inherited from a less specific group, e.g. `{php_fpm: {state: stopped, enabled: false}}` disables PHP-FPM on a host that doesn't need it. | dict | no |  |
 | `javavms` | FreeBSD javavms configuration | dict of `javavms` [options](#options-for-main--system--javavms) | no | `{}` |
 | `motd` | Message of the day configuration | dict of `motd` [options](#options-for-main--system--motd) | no | `{}` |
 
@@ -85,6 +86,7 @@ system role for Proserver
 | `motd` | Enable message of the day configuration | bool | no | `True` |
 | `unattended_upgrades` | Enable unattended upgrades configuration (Debian/Ubuntu only) | bool | no | `False` |
 | `javavms` | Enable javavms configuration (FreeBSD only) | bool | no | `{{ ansible_facts['system'] == 'FreeBSD' }}` |
+| `services` | Enable service state management | bool | no | `True` |
 
 #### Options for `system.prefix`
 

@@ -84,3 +84,7 @@
 - name: Configure the SSH daemon
   ansible.builtin.include_tasks: sshd.yaml
   when: system.features.sshd
+
+- name: Manage services
+  ansible.builtin.include_tasks: services.yaml
+  when: system.features.services
