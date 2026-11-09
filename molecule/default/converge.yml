@@ -3,6 +3,8 @@
   hosts: all
   vars:
     system:
+      features:
+        services: true
       services:
         molecule-disable:
           state: stopped

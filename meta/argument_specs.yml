@@ -126,7 +126,7 @@ argument_specs:
               services:
                 description: Enable service state management
                 type: bool
-                default: true
+                default: false
           prefix:
             description: Path prefixes for various system components
             type: dict
@@ -309,7 +309,8 @@ argument_specs:
             default: []
           services:
             description: >-
-              Services to manage, keyed by service name. Each value may set
+              Services to manage, keyed by service name; only applied when
+              `system.features.services` is enabled. Each value may set
               `state` (started, stopped, restarted, reloaded) and/or `enabled`
               (bool); omitted keys are left untouched. Set a service to null to
               drop an entry inherited from a less specific group, e.g.
