@@ -176,6 +176,12 @@ system role for Proserver
 | `banner_string` | Banner string for MOTD | str | no | punkt.de Proserver ASCII art |
 | `details` | Additional details for MOTD | str | no | List of dehydrated domains and system hostnames |
 
+#### Options for `nodejs`
+
+|Option|Description|Type|Required|Default|
+|---|---|---|---|---|
+| `version` | Node.js major version to install from NodeSource, e.g. 26. Nothing is installed if unset | int | no |  |
+
 ## Dependencies
 None.
 

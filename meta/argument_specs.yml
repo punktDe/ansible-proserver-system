@@ -337,3 +337,11 @@ argument_specs:
         description: Global flag to reset UFW firewall
         type: bool
         default: false
+      nodejs:
+        description: Node.js installation from NodeSource (Debian/Ubuntu only)
+        type: dict
+        required: false
+        options:
+          version:
+            description: Node.js major version to install from NodeSource, e.g. 26. Nothing is installed if unset
+            type: int
