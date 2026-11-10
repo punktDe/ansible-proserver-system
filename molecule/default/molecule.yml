@@ -29,6 +29,8 @@ provisioner:
   name: ansible
   env:
     ANSIBLE_ROLES_PATH: "../../../"
+    # Merge play vars into the role defaults, as the punkt.de playbooks do
+    ANSIBLE_HASH_BEHAVIOUR: merge
   playbooks:
     converge: ${MOLECULE_PLAYBOOK:-converge.yml}
 verifier:

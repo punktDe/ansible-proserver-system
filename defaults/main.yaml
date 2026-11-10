@@ -35,6 +35,7 @@ system:
     motd: yes
     unattended_upgrades: no
     javavms: "{{ ansible_facts['system'] == 'FreeBSD' }}"
+    services: no
   prefix:
     sudoers: >-
       {%- if ansible_facts['system'] == 'Linux' -%}
@@ -95,6 +96,7 @@ system:
   groups: {}
   users: {}
   users_delete: []
+  services: {}
   javavms:
     path: /usr/local/etc/javavms
     openjdk_path: /usr/local

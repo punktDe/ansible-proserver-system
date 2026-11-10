@@ -123,6 +123,10 @@ argument_specs:
                 description: Enable javavms configuration (FreeBSD only)
                 type: bool
                 default: "{{ ansible_facts['system'] == 'FreeBSD' }}"
+              services:
+                description: Enable service state management
+                type: bool
+                default: false
           prefix:
             description: Path prefixes for various system components
             type: dict
@@ -303,6 +307,17 @@ argument_specs:
             type: list
             elements: str
             default: []
+          services:
+            description: >-
+              Services to manage, keyed by service name; only applied when
+              `system.features.services` is enabled. Each value may set
+              `state` (started, stopped, restarted, reloaded) and/or `enabled`
+              (bool); omitted keys are left untouched. Set a service to null to
+              drop an entry inherited from a less specific group, e.g.
+              `{php_fpm: {state: stopped, enabled: false}}` disables PHP-FPM
+              on a host that doesn't need it.
+            type: dict
+            default: {}
           javavms:
             description: FreeBSD javavms configuration
             type: dict

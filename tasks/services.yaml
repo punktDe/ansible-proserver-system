@@ -1,0 +1,9 @@
+---
+- name: Manage the state of services
+  ansible.builtin.service:
+    name: "{{ item.key }}"
+    state: "{{ item.value.state | default(omit) }}"
+    enabled: "{{ item.value.enabled | default(omit) }}"
+  loop: "{{ system.services | dict2items | rejectattr('value', 'none') }}"
+  loop_control:
+    label: "{{ item.key }}"

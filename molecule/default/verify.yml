@@ -3,6 +3,23 @@
   hosts: all
   gather_facts: false
   tasks:
-    - name: Example assertion
+    - name: Query the state of the dummy services
+      ansible.builtin.command: # noqa: command-instead-of-module - checks the result independently of the service module
+        cmd: "systemctl {{ item.0 }} {{ item.1 }}"
+      changed_when: false
+      failed_when: false
+      register: verify_services
+      loop: "{{ ['is-active', 'is-enabled'] | product(['molecule-disable', 'molecule-enable']) | list }}"
+
+    - name: Assert the services feature set the expected states
       ansible.builtin.assert:
-        that: true
+        that:
+          - verify_state['is-active molecule-disable'] == 'inactive'
+          - verify_state['is-enabled molecule-disable'] == 'disabled'
+          - verify_state['is-active molecule-enable'] == 'active'
+          - verify_state['is-enabled molecule-enable'] == 'enabled'
+        fail_msg: "{{ verify_state | to_json }}"
+      vars:
+        verify_state: >-
+          {{ dict(verify_services.results | map(attribute='item') | map('join', ' ')
+               | zip(verify_services.results | map(attribute='stdout'))) }}
