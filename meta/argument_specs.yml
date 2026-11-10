@@ -245,6 +245,10 @@ argument_specs:
                     type: list
                     description: "A list of packages that shouldn't be automatically updated"
                     default: []
+                  origins_pattern:
+                    type: dict
+                    description: "Additional repositories to update from, e.g. third-party repositories (dict with arbitrary names as keys and Unattended-Upgrade::Origins-Pattern entries as values, e.g. 'origin=MariaDB,codename=${distro_codename}'; set a value to null to disable it)"
+                    default: {}
                   schedule:
                     type: str
                     description: "Update schedule in systemd OnCalendar format"
