@@ -3,6 +3,12 @@
   hosts: all
   gather_facts: false
   tasks:
-    - name: Example assertion
-      ansible.builtin.assert:
-        that: true
+    # Asks unattended-upgrades itself whether the configured origins match the
+    # distribution's security repository. The legacy Allowed-Origins syntax
+    # matched on Debian's Suite ("stable-security") and silently allowed
+    # nothing there.
+    - name: Check that unattended-upgrades allows the security repository
+      changed_when: false
+      ansible.builtin.script:
+        cmd: check_security_origin.py
+        executable: python3

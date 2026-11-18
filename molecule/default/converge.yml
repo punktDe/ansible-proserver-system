@@ -4,6 +4,14 @@
   environment:
     GITHUB_ACTIONS: "maybe"
     ANSIBLE_HASH_BEHAVIOUR: merge
+  vars:
+    system:
+      features:
+        unattended_upgrades: true
+      unattended_upgrades:
+        config:
+          mail:
+            enable: false
   tasks:
     - name: Include ansible-proserver-system
       ansible.builtin.include_role:
