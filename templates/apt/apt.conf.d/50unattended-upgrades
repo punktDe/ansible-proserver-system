@@ -8,10 +8,26 @@ Unattended-Upgrade::MailOnlyOnError "true";
 {% endif %}
 {% endif %}
 
-Unattended-Upgrade::Allowed-Origins {
-  "${distro_id} ${distro_codename}-security";
+{#
+  Origins-Pattern instead of the legacy Allowed-Origins: Allowed-Origins
+  matches its second field against the repository's Suite ("a="). On Ubuntu
+  the security Suite is "<codename>-security", but on Debian it is
+  "stable-security" / "oldstable-security", so "<codename>-security" never
+  matched there and no security updates were installed. Debian is matched by
+  Codename instead, as in Debian's own default configuration.
+#}
+Unattended-Upgrade::Origins-Pattern {
+{% if ansible_facts['distribution'] == 'Debian' %}
+  "origin=Debian,codename=${distro_codename}-security,label=Debian-Security";
 {% if system.unattended_upgrades.config.feature_updates %}
-  "${distro_id} ${distro_codename}-updates";
+  "origin=Debian,codename=${distro_codename},label=Debian";
+  "origin=Debian,codename=${distro_codename}-updates,label=Debian";
+{% endif %}
+{% else %}
+  "origin=${distro_id},archive=${distro_codename}-security";
+{% if system.unattended_upgrades.config.feature_updates %}
+  "origin=${distro_id},archive=${distro_codename}-updates";
+{% endif %}
 {% endif %}
 };
 
